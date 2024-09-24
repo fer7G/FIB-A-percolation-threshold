@@ -104,6 +104,5 @@ int main()
     cin.rdbuf(inputFile.rdbuf());  // Redirect cin to read from the file
     g.readFile();
     inputFile.close();
-    g.printGraph();
     cout << "The graph has " << g.connectedComponents() << " connected components" << endl;
 }

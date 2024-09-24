@@ -65,8 +65,27 @@ public:
         }
     }
 
-    int connectedComponents() {
+    void dfs(int node, vector<bool>& visited) {
+        visited[node] = true;
+        for (int neighbor : adjList[node]) {
+            if (!visited[neighbor]) {
+                dfs(neighbor, visited);
+            }
+        }
+    }
 
+    int connectedComponents() {
+        vector<bool> visited(numNodes, false);
+        int numComponents = 0;
+
+        for (int i = 0; i < numNodes; ++i) {
+            if (!visited[i]) {
+                numComponents++;
+                dfs(i, visited);  
+            }
+        }
+
+        return numComponents;
     }
 };
 
@@ -85,5 +104,6 @@ int main()
     cin.rdbuf(inputFile.rdbuf());  // Redirect cin to read from the file
     g.readFile();
     inputFile.close();
-    cout << 
+    g.printGraph();
+    cout << "The graph has " << g.connectedComponents() << " connected components" << endl;
 }

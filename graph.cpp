@@ -64,6 +64,10 @@ public:
             }
         }
     }
+
+    int connectedComponents() {
+
+    }
 };
 
 int main()
@@ -78,15 +82,8 @@ int main()
         return 1;
     }
 
-    // Redirect the file input to cin temporarily
     cin.rdbuf(inputFile.rdbuf());  // Redirect cin to read from the file
-
-    // Read the graph data from the file
     g.readFile();
-
-    // Close the file after reading
     inputFile.close();
-
-    // Print the graph to standard output
-    g.printGraph();
+    cout << 
 }

@@ -11,4 +11,4 @@ def generate_random_graph(num_nodes, edge_prob, output_file):
         for u, v in G.edges():
             f.write(f"e {u + 1} {v + 1}\n")
 
-generate_random_graph(1000, 0.01, "test.dimacs")
+generate_random_graph(1000, 0.005, "test.dimacs")

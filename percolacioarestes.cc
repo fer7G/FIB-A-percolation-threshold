@@ -16,7 +16,7 @@ int main(){
     float q;
     cin>>q;
     random_device generador0;
-    mt19937 generador{generador0()};
+    mt19937 generador(generador0());
     bernoulli_distribution distribucion(1-q);
     for(int i=0; i<n; ++i) {
         int j=0;
@@ -34,5 +34,4 @@ int main(){
         for(int j=0; j<n2 ; ++j) cout<<i<<" "<<aristas[i][j]<<endl;
 
     }
-
 }

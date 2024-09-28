@@ -4,14 +4,12 @@ using namespace std;
 #include <sstream>
 #include <fstream>
 
-class Graph
+struct Graph
 {
-private:
     int numNodes;
     vector< vector<int> > adjList;
 
-public:
-    explicit Graph()
+ Graph()
     {
         numNodes = 0;
         adjList.resize(0);

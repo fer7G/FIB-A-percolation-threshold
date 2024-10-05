@@ -1,4 +1,4 @@
-networkx==3.1
-matplotlib==3.7.1
-numpy==1.24.3
+networkx>=3.1
+matplotlib>=3.8.0
+numpy>=1.26.0
 #Teneis que ejecutar des de una terminal:  pip install -r requirements.txt

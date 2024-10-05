@@ -1,5 +1,7 @@
 import networkx as nx
 
+fileName = "test.dimacs"
+
 def generate_random_graph(num_nodes, edge_prob, output_file):
     G = nx.erdos_renyi_graph(num_nodes, edge_prob)
 
@@ -11,4 +13,4 @@ def generate_random_graph(num_nodes, edge_prob, output_file):
         for u, v in G.edges():
             f.write(f"e {u + 1} {v + 1}\n")
 
-generate_random_graph(1000, 0.005, "test.dimacs")
+generate_random_graph(1000, 0.005, fileName)

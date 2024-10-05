@@ -79,6 +79,7 @@ struct Graph
 
         return numComponents;
     }
+
 };
 
 int main()

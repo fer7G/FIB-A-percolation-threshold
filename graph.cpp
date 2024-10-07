@@ -116,6 +116,5 @@ int main()
     } else {
         std::cerr << "Failed to execute the Python script." << std::endl;
     }
-    cout << "pito" << endl;
 }
 

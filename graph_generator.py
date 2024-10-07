@@ -36,16 +36,17 @@ def write_graph_to_file(output_file, G, num_nodes):
 
 
 tipo = input("Introduce un tipo de grafo, malla o erdos-renyi: ")
+guardar = input("¿Desea guardar el grafo generado? (y/n): ")
 
 if tipo == "malla":
     n, m = map(int, input("Introduce la altura y anchura de la malla (separados por un espacio): ").split())
     graph = generate_malla(n, m)
     draw_graph_malla(graph)
-    write_graph_to_file(fileName, graph, graph.number_of_nodes())
+    if guardar: write_graph_to_file(fileName, graph, graph.number_of_nodes())
 
 else:
     n = int(input("Introduce el número de nodos: "))
     p = float(input("Introduce la probabilidad de las aristas: "))
     graph = generate_random_graph(n, p)
     draw_graph_erdos_renyi(graph)
-    write_graph_to_file(fileName, graph, graph.number_of_nodes())
+    if guardar: write_graph_to_file(fileName, graph, graph.number_of_nodes())

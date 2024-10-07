@@ -14,6 +14,7 @@ int main(){
         cin>>a>>b;
         aristas[a].push_back(b);
     }
+    
     float q;
     cin>>q;
     random_device generador0;

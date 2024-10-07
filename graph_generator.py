@@ -14,12 +14,14 @@ def generate_malla(x, y):
 def draw_graph_malla(G):
     pos = dict((n, n) for n in G.nodes())  # Posiciones de los nodos en la cuadrícula
     nx.draw(G, pos=pos, with_labels=True, node_size=500, node_color="lightblue")
-    plt.show()
+    plt.savefig("graph.png")
+    plt.close()
 
 def draw_graph_erdos_renyi(G):
     plt.figure(figsize=(8, 8))  # Ajustar el tamaño de la figura
     nx.draw(G, with_labels=True, node_color="skyblue", node_size=700, edge_color="gray", font_weight='bold')
-    plt.show()
+    plt.savefig("graph.png")
+    plt.close()
 
 def write_graph_to_file(output_file, G, num_nodes):
     # Crear un mapeo de tuplas (en el caso de una malla) a enteros

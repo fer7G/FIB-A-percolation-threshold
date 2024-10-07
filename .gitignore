@@ -3,3 +3,4 @@
 *.dimacs
 .idea
 .venv
+.png

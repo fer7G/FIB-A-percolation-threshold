@@ -1,37 +1,65 @@
+#include <vector>
 #include <iostream>
 #include <random>
-#include <vector>
+#include "graph.cpp"
 using namespace std;
 
-int main(){
-    int n,m;
-    cin>>n>>m;
-    int m2=m;
-    vector < vector < int > > aristas(n);
-    for(int i =0; i<m; i++){
-        int a,b;
-        cin>>a>>b;
-        aristas[a].push_back(b);
-    }
-    float q;
-    cin>>q;
+vector<vector<double>> add_values(Graph g) {
+    int sz=g.adjList.size();
+    vector<vector<double>> res(sz);
     random_device generador0;
     mt19937 generador(generador0());
-    bernoulli_distribution distribucion(1-q);
-    for(int i=0; i<n; ++i) {
-        int j=0;
-        while(j<aristas[i].size()) {
-            if(distribucion(generador)){
-                aristas[i].erase(aristas[i].begin()+j);
-                m2--;
-            }
-            else j++;
+    uniform_real_distribution<> distr(0.0,1.0);
+    for (int i = 0; i < sz; ++i) {
+        for(int j = 0; j < g.adjList[i].size(); ++j) res[i].push_back(distr(generador));
+    }
+    return res;
+}
+
+void eraseedge(Graph &g, int x, int vert) {
+    int pos = -1;
+    int i = 0;
+    while (pos == -1) {
+        if (g.adjList[x][i]==vert) pos = i;
+        ++i;
+    }
+    g.adjList[x].erase(g[x].begin()+pos);
+}
+
+void eraseedge(vector<vector<double>> &g, int x, int vert) {
+    int pos = -1;
+    int i = 0;
+    while (pos == -1) {
+        if (g[x][i]==vert) pos = i;
+        ++i;
+    }
+    g[x].erase(g[x].begin()+pos);
+}
+
+void writegraph(Graph &g, int n) {
+    cout << n << endl;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < g.adjList[i].size(); ++j) {
+            cout << i << ' ' << g.adjList[i][j] << endl;
+            //eraseedge(g,g.adjList[i][j],i);
         }
     }
-    cout<<n<<" "<<m2<<endl;
-    for(int i=0; i<n; ++i) {
-        int n2=aristas[i].size();
-        for(int j=0; j<n2 ; ++j) cout<<i<<" "<<aristas[i][j]<<endl;
+}
 
+int percolacio_aristes(Graph g,double q,vector<vector<double>> values) {
+    int n = g.numNodes;
+    double p=1-q;
+    for (int i = 0; i < n; ++i) {
+        int sz = g.adjList[i].size();
+        for (int j = 0; j < sz; ++j) {
+            if (values[i][j] < p) {
+                g.adjList[i].erase(g.adjList[i].begin()+j);
+                values[i].erase(values[i].begin()+j);
+                eraseedge(g,g.adjList[i][j],i);
+                eraseedge(values,values[i][j],i);
+            }
+        }
     }
+    writegraph(g,n);
+    return g.connected_components();
 }

@@ -96,25 +96,26 @@ struct Graph
 int main()
 {
     
-    // Graph g;
-    // // Open the DIMACS file
-    // ifstream inputFile(FILE_NAME);
 
-    // if (!inputFile.is_open()) {
-    //     cerr << "Error: Could not open file" << endl;
-    //     return 1;
-    // }
-
-    // cin.rdbuf(inputFile.rdbuf());  // Redirect cin to read from the file
-    // g.read_file();
-    // inputFile.close();
-
-    // cout << "The graph has " << g.connected_components() << " connected components" << endl;
     int result = system("python3 graph_generator.py");
         if (result == 0) {
         std::cout << "Python script executed successfully!" << std::endl;
     } else {
         std::cerr << "Failed to execute the Python script." << std::endl;
     }
+
+    Graph g;
+    ifstream inputFile(FILE_NAME);
+
+    if (!inputFile.is_open()) {
+        cerr << "Error: Could not open file" << endl;
+        return 1;
+    }
+
+    cin.rdbuf(inputFile.rdbuf());  // Redirect cin to read from the file
+    g.read_file();
+    inputFile.close();
+
+    cout << "The graph has " << g.connected_components() << " connected components" << endl;
 }
 

@@ -5,6 +5,14 @@ fileName = "test.dimacs"
 
 def generate_random_graph(num_nodes, edge_prob):
     G = nx.erdos_renyi_graph(num_nodes, edge_prob)
+    if not nx.is_connected(G):
+    # Get the connected components
+        components = list(nx.connected_components(G))
+        for i in range(1, len(components)):
+            # Connect one node from each component to ensure connectivity
+            node_from_first = list(components[0])[0]
+            node_from_current = list(components[i])[0]
+            G.add_edge(node_from_first, node_from_current)     
     return G
 
 def generate_malla(x, y):

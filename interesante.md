@@ -38,3 +38,8 @@ A continuación se mencionan algunas referencias y conceptos interesantes para e
 	- Al principio, aumentar el número de experimentos reduce la varianza o mejora la estabilidad de los resultados rápidamente.
 	  
 	- En algún punto, la mejora empieza a ser mínima, formando un "codo" en el gráfico. Ese es el punto donde realizar más experimentos **no agrega valor significativo**, porque los resultados ya son bastante consistentes. 
+
+
+## Sesión de dudas:
+-Hay que partir de un grafo conexo para poder aplicar el algoritmo de percolation.
+

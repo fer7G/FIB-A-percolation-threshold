@@ -3,15 +3,16 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-# Configuración de parámetros
-nombre_archivo_dimacs = "malla_cuadrada.dimacs"  # Cambia a tu archivo DIMACS real
-num_iteraciones = 10
-valores_q = [round(i * 0.1, 2) for i in range(1, num_iteraciones + 1)]  # Limitar q a 2 decimales
+nombre_archivo_dimacs = "test.dimacs"  
+num_iteraciones = 10                #Numero de veces que se aplica la perocolación con distinta q
+valores_q = [round(i * 0.1, 2) for i in range(1, num_iteraciones + 1)]  
 
 resultados = []
 for q in valores_q:
     try:
+        #Ejecuta el programa script.cpp con los params de entrada
         resultado = subprocess.run(["./script"], input=f"{nombre_archivo_dimacs}\n{q}\n", capture_output=True, text=True)
+
         if resultado.returncode == 0:
             # Extraer el número de componentes conexos de la salida
             salida = resultado.stdout
@@ -19,18 +20,20 @@ for q in valores_q:
             resultados.append((q, componentes_conexos))
         else:
             print(f"Error en la ejecución con q = {q}:\n{resultado.stderr}")
+            
     except Exception as e:
         print(f"Error al ejecutar el programa: {e}")
 
-# Crear un DataFrame con los nuevos resultados
-df_nuevo = pd.DataFrame(resultados, columns=['q', 'Componentes Conexos'])
+#Creación de los títulos de las columnas
+df_cols = pd.DataFrame(resultados, columns=['q', 'Componentes Conexos'])
+df_espacio = pd.DataFrame(columns=['q', 'Componentes Conexos'], index=[-1])  # Using -1 or another unique index
 
-# Leer el archivo existente y agregar los nuevos resultados
+#Comprueba que el archivo exista, y en caso
 if os.path.exists("resultados_percolacion.xlsx"):
     df_existente = pd.read_excel("resultados_percolacion.xlsx")
-    df_total = pd.concat([df_existente, df_nuevo], ignore_index=True)
+    df_total = pd.concat([df_existente, df_espacio, df_cols], ignore_index=True)
 else:
-    df_total = df_nuevo
+    df_total = df_cols
 
 # Guardar el archivo actualizado
 df_total.to_excel("resultados_percolacion.xlsx", index=False)

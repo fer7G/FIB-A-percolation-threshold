@@ -1,5 +1,5 @@
 #include <vector>
-
+typedef pair<int, int> Edge;
 using namespace std;
 
 class UnionFind {

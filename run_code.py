@@ -5,7 +5,7 @@ import os
 
 # Configuración de parámetros
 nombre_archivo_dimacs = "malla_cuadrada.dimacs"  # Cambia a tu archivo DIMACS real
-num_iteraciones = 25
+num_iteraciones = 10
 valores_q = [round(i * 0.1, 2) for i in range(1, num_iteraciones + 1)]  # Limitar q a 2 decimales
 
 resultados = []

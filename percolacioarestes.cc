@@ -16,7 +16,7 @@ vector<vector<double>> add_values(Graph g) {
     return res;
 }
 
-void eraseedge(Graph &g, int x, int vert) {
+/*void eraseedge(Graph &g, int x, int vert) {
     int pos = -1;
     int i = 0;
     while (pos == -1) {
@@ -34,7 +34,7 @@ void eraseedge(vector<vector<double>> &g, int x, int vert) {
         ++i;
     }
     g[x].erase(g[x].begin()+pos);
-}
+}*/
 
 void writegraph(Graph &g, int n) {
     cout << n << endl;
@@ -46,7 +46,19 @@ void writegraph(Graph &g, int n) {
     }
 }
 
-int percolacio_aristes(Graph g,double q,vector<vector<double>> values) {
+Graph desdobla(const Graph &g) {
+    Graph res;
+    res.adjList = Matrix(g.adjList.size());
+    for (int i = 0; i < g.numNodes; ++i) {
+        for (int j = 0; j < g.adjList[i].size(); ++j) {
+            res.adjList[i].push_back(g.adjList[i][j]);
+            res.adjList[g.adjList[i][j]].push_back(i);
+        }
+    }
+    return res;
+}
+
+int percolacio_aristes(Graph g,const double &q,vector<vector<double>> values) {
     int n = g.numNodes;
     double p=1-q;
     for (int i = 0; i < n; ++i) {
@@ -55,11 +67,10 @@ int percolacio_aristes(Graph g,double q,vector<vector<double>> values) {
             if (values[i][j] < p) {
                 g.adjList[i].erase(g.adjList[i].begin()+j);
                 values[i].erase(values[i].begin()+j);
-                eraseedge(g,g.adjList[i][j],i);
-                eraseedge(values,values[i][j],i);
             }
         }
     }
-    writegraph(g,n);
-    return g.connected_components();
+    //writegraph(g,n);
+    Graph result = desdobla(g);
+    return result.connected_components();
 }

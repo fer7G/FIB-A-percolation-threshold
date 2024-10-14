@@ -44,7 +44,7 @@ int percolaciovertex(vector<int> ProbVertex,const Graph& a, float p){
             int n2=a.adjList[i].size();
             for(int j=0; j<n2 ; ++j){
                 int conexion=a.adjList[i][j];
-                if( nodosrestantes[conexion]) {
+                if( nodosrestantes[conexion] and i<j) {
                     inducido.adjList[nodosfinales[i]].push_back(nodosfinales[conexion]);
                   //  cout<<nodosfinales[i]<<" "<<nodosfinales[conexion]<<endl;
                 }

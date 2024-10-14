@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-nombre_archivo_dimacs = "test.dimacs"  
+nombre_archivo_dimacs = "erdos.dimacs"  
 num_iteraciones = 10                #Numero de veces que se aplica la perocolación con distinta q
 valores_q = [round(i * 0.1, 2) for i in range(1, num_iteraciones + 1)]  
 

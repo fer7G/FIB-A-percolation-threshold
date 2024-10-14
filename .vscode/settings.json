@@ -3,5 +3,7 @@
         "*.pl": "prolog",
         "vector": "cpp",
         "cstdlib": "cpp"
+        
     }
+
 }

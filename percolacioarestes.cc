@@ -4,9 +4,9 @@
 #include "graph.cpp"
 using namespace std;
 
-vector<vector<double>> add_values(Graph g) {
+vector<vector<float>> add_values(Graph g) {
     int sz=g.adjList.size();
-    vector<vector<double>> res(sz);
+    vector<vector<float>> res(sz);
     random_device generador0;
     mt19937 generador(generador0());
     uniform_real_distribution<> distr(0.0,1.0);
@@ -26,7 +26,7 @@ vector<vector<double>> add_values(Graph g) {
     g.adjList[x].erase(g[x].begin()+pos);
 }
 
-void eraseedge(vector<vector<double>> &g, int x, int vert) {
+void eraseedge(vector<vector<float>> &g, int x, int vert) {
     int pos = -1;
     int i = 0;
     while (pos == -1) {
@@ -58,9 +58,9 @@ Graph desdobla(const Graph &g) {
     return res;
 }
 
-int percolacio_aristes(Graph g,const double &q,vector<vector<double>> values) {
+int percolacio_aristes(Graph g,const float &q,vector<vector<float>> values) {
     int n = g.numNodes;
-    double p=1-q;
+    float p=1-q;
     for (int i = 0; i < n; ++i) {
         int sz = g.adjList[i].size();
         for (int j = 0; j < sz; ++j) {

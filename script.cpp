@@ -109,7 +109,6 @@ vector<Edge> leerDimacs(const string& nombreArchivo, int& numNodos) {
 
 int main() {
     string nombreArchivo;
-    cout << "Introduce el nombre del archivo DIMACS: ";
     cin >> nombreArchivo;
 
     int numNodos;
@@ -125,7 +124,6 @@ int main() {
 
     // Pedir valor de q
     double q;
-    cout << "Introduce el valor de q (probabilidad de que una arista no falle): ";
     cin >> q;
 
     // Percolar el grafo y obtener el número de componentes conexos

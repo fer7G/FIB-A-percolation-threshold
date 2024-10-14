@@ -4,4 +4,4 @@
 .idea
 .venv
 .png
-.DS_Store
+*.DS_Store

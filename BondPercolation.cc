@@ -1,11 +1,13 @@
 #include "BondPercolation.h"
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
 
 /**
  * Constructor que inicializa la clase con el número de nodos.
+ * Inicializa current_q en 0 para comenzar desde la percolación mínima.
  */
-BondPercolation::BondPercolation(int numNodos) : uf(numNodos), numNodos(numNodos) {}
+BondPercolation::BondPercolation(int numNodos) : uf(numNodos), numNodos(numNodos), current_q(0.0) {}
 
 /**
  * Genera una configuración de pesos aleatorios para las aristas.
@@ -23,18 +25,25 @@ vector<pair<Edge, double>> BondPercolation::generate_configuration(const vector<
 }
 
 /**
- * Realiza una percolación para un valor dado de q y devuelve el número de componentes conexos.
+ * Realiza una percolación incremental. Solo se procesan las aristas cuyo peso esté entre current_q y el nuevo q.
  */
 int BondPercolation::generate_single_percolation(const vector<pair<Edge, double>>& configuracion, double q) {
-    uf = UnionFind(numNodos);  // Reiniciar el estado de UnionFind para cada percolación
+    if (q < current_q) {
+        cerr << "Error: No se puede realizar una percolación con un q menor que el actual." << endl;
+        return uf.numComponents(numNodos);  // Devuelve el número actual de componentes si no es válido
+    }
 
+    // Solo procesar las aristas cuyo peso esté entre current_q y q
     for (const auto& [arista, peso] : configuracion) {
-        if (peso <= q) {  // Si el peso es menor o igual a q, la arista se mantiene
-            uf.unite(arista.first, arista.second);
+        if (peso > current_q && peso <= q) {
+            uf.unite(arista.first, arista.second);  // Unir si el peso está en el rango correcto
         }
     }
 
-    return uf.numComponents(numNodos);  // Devuelve el número de componentes conexos
+    // Actualizar el valor actual de q
+    current_q = q;
+
+    return uf.numComponents(numNodos);  // Devuelve el número de componentes conexos actual
 }
 
 /**

@@ -1,11 +1,13 @@
 #include "SitePercolation.h"
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
 
 /**
  * Constructor que inicializa la clase con el número de nodos.
+ * Inicializa current_q en 0 para comenzar desde la percolación mínima.
  */
-SitePercolation::SitePercolation(int numNodos) : uf(numNodos), numNodos(numNodos) {}
+SitePercolation::SitePercolation(int numNodos) : uf(numNodos), numNodos(numNodos), current_q(0.0), nodoActivo(numNodos, false) {}
 
 /**
  * Genera una configuración de pesos aleatorios para los vértices.
@@ -22,16 +24,19 @@ vector<double> SitePercolation::generate_configuration() {
 }
 
 /**
- * Realiza una percolación para un valor dado de q y devuelve el número de componentes conexos.
+ * Realiza una percolación incremental. Solo se procesan los vértices cuyo peso esté entre current_q y el nuevo q.
+ * El vector de nodos activos se va actualizando.
  */
 int SitePercolation::generate_single_percolation(const vector<Edge>& aristas, const vector<double>& configuracion, double q) {
-    uf = UnionFind(numNodos);  // Reiniciar el estado de UnionFind para cada percolación
-    vector<bool> nodoActivo(numNodos, false);  // Vector que indica si un nodo está activo
+    if (q < current_q) {
+        cerr << "Error: No se puede realizar una percolación con un q menor que el actual." << endl;
+        return uf.numComponents(numNodos);  // Devuelve el número actual de componentes si no es válido
+    }
 
-    // Marcar nodos activos según el valor de q
+    // Activar nodos cuya configuración esté entre current_q y el nuevo q
     for (int i = 0; i < numNodos; ++i) {
-        if (configuracion[i] >= q) {
-            nodoActivo[i] = true;  // El nodo se mantiene activo
+        if (!nodoActivo[i] && configuracion[i] <= q) {
+            nodoActivo[i] = true;  // Activar el nodo si no lo estaba ya
         }
     }
 
@@ -44,7 +49,10 @@ int SitePercolation::generate_single_percolation(const vector<Edge>& aristas, co
         }
     }
 
-    return uf.numComponents(numNodos);  // Devuelve el número de componentes conexos
+    // Actualizar el valor actual de q
+    current_q = q;
+
+    return uf.numComponents(numNodos);  // Devuelve el número de componentes conexos actual
 }
 
 /**

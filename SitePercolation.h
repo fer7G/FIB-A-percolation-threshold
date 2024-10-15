@@ -48,6 +48,8 @@ public:
 private:
     UnionFind uf;  // Objeto UnionFind para manejar la conectividad dinámica del grafo.
     int numNodos;  // Número de nodos en el grafo.
+    double current_q; // Valor actual de q
+    vector<bool> nodoActivo;  // Vector que indica si un nodo está activo
 };
 
 #endif

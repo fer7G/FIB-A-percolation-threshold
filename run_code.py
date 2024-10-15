@@ -3,15 +3,16 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-nombre_archivo_dimacs = "erdos.dimacs"  
+nombre_archivo_dimacs = "malla_cuadrada.dimacs"  
 num_iteraciones = 10                #Numero de veces que se aplica la perocolación con distinta q
 valores_q = [round(i * 0.1, 2) for i in range(1, num_iteraciones + 1)]  
+
 
 resultados = []
 for q in valores_q:
     try:
         #Ejecuta el programa script.cpp con los params de entrada
-        resultado = subprocess.run(["./script"], input=f"{nombre_archivo_dimacs}\n{q}\n", capture_output=True, text=True)
+        resultado = subprocess.run(["./node_percolation"], input=f"{nombre_archivo_dimacs}\n{q}\n", capture_output=True, text=True)
 
         if resultado.returncode == 0:
             # Extraer el número de componentes conexos de la salida

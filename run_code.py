@@ -46,22 +46,23 @@ def save_results_to_excel(results, filename):
 
 def plot_results(filename):
     # Load the Excel file
-    df = pd.read_excel(filename, sheet_name="Percolation Results")
+    df = pd.read_excel(filename)
     
     # Plot q values vs. number of connected components
     plt.figure(figsize=(10, 6))
-    plt.plot(df["q"], df["Connected Components"], marker="o", linestyle="-", color="b", label="Connected Components")
-    plt.xlabel("Percolation Probability (q)")
-    plt.ylabel("Number of Connected Components")
-    plt.title("Connected Components vs Percolation Probability")
+    plt.plot(df["q"], df["Componentes Conexos"], marker="o", linestyle="-", color="b", label="Connected Components")
+    plt.xlabel("Probabilidad de Percolación (q)")
+    plt.ylabel("Número de Componentes Conexos")
+    plt.title("Componentes Conexos vs Probabilidad de Percolación")
     plt.legend()
     plt.grid()
+    plt.savefig("plot_percolation_results.png")  # Save the plot as a file
     plt.show()
 
 
 # Parameters for the program execution
 executable = "./programa"  # Update this with the path to your executable
-dimacs_file = "erdos.dimacs"
+dimacs_file = "geom.dimacs"
 percolation_type = 1  # 1 for Bond Percolation, 2 for Site Percolation
 step = 0.1
 
@@ -70,5 +71,5 @@ results = run_percolation_program(executable, dimacs_file, percolation_type, ste
 
 # Save to Excel if results were obtained
 if results:
-    save_results_to_excel(results, "results_percolation.xlsx")
-    plot_results("results_percolation.xlsx")
+    save_results_to_excel(results, "resultados_percolacion.xlsx")
+    plot_results("resultados_percolacion.xlsx")

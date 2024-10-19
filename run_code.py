@@ -11,6 +11,7 @@ def run_percolation_program(executable, dimacs_file, percolation_type, step):
         text=True,
         capture_output=True
     )
+    print(result.stdout)
 
     # Check for errors
     if result.returncode != 0:
@@ -62,13 +63,12 @@ def plot_results(filename):
 
 # Parameters for the program execution
 executable = "./programa"  # Update this with the path to your executable
-dimacs_file = "geom.dimacs"
+dimacs_file = "malla_cuadrada.dimacs"
 percolation_type = 1  # 1 for Bond Percolation, 2 for Site Percolation
 step = 0.1
 
 # Run the C++ program and collect results
 results = run_percolation_program(executable, dimacs_file, percolation_type, step)
-
 # Save to Excel if results were obtained
 if results:
     save_results_to_excel(results, "resultados_percolacion.xlsx")

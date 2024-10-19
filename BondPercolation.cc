@@ -56,7 +56,7 @@ int BondPercolation::generate_single_percolation(const vector<pair<Edge, double>
     for (const auto& [arista, peso] : configuracion) {
         if (peso > current_q && peso <= q) {
             uf.unite(arista.first, arista.second);  // Unir si el peso está en el rango correcto
-            int newgreatest = max(uf.size[arista.first],uf.size[arista.second]);
+            int newgreatest = max(uf.get_size(arista.first),uf.get_size(arista.second));
             greatest = max(greatest,newgreatest);
             uf_aux.unite(arista.first, arista.second);  // Unir en la estructura auxiliar
         }

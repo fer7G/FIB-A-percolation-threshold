@@ -46,7 +46,7 @@ vector<double> SitePercolation::generate_configuration() {
  * Realiza una percolación incremental. Solo se procesan los vértices cuyo peso esté entre current_q y el nuevo q.
  * El vector de nodos activos se va actualizando.
  */
-int SitePercolation::generate_single_percolation(const vector<Edge>& aristas, const vector<double>& configuracion, double q) {
+int SitePercolation::generate_single_percolation(const vector<Edge>& aristas, const vector<double>& configuracion, double q, int &greatest) {
     if (q < current_q) {
         cerr << "Error: No se puede realizar una percolación con un q menor que el actual." << endl;
         return uf.numComponents(numNodos);  // Devuelve el número actual de componentes si no es válido
@@ -65,6 +65,8 @@ int SitePercolation::generate_single_percolation(const vector<Edge>& aristas, co
         int v = arista.second;
         if (nodoActivo[u] && nodoActivo[v]) {  // Unir solo nodos activos
             uf.unite(u, v);
+            int newgreatest = max(uf.size[u],uf.size[v]);
+            greatest = max(greatest,newgreatest);
             uf_aux.unite(u, v);
         }
     }
@@ -81,6 +83,8 @@ int SitePercolation::generate_single_percolation(const vector<Edge>& aristas, co
  */
 vector<pair<double, int>> SitePercolation::generate_full_percolation(const vector<Edge>& aristas, const vector<double>& configuracion, double step) {
     vector<pair<double, int>> resultados;
+    int greatest = 1;
+    int compr = numNodos/2;
 
     initialize_supernodes();
 
@@ -88,8 +92,10 @@ vector<pair<double, int>> SitePercolation::generate_full_percolation(const vecto
 
     // Recorremos los valores de q entre 0 y 1 usando el step
     for (double q = 0.0; q <= 1.0 + 1e-10; q += step) {
-        int numComponentes = generate_single_percolation(aristas, configuracion, q);
+        int numComponentes = generate_single_percolation(aristas, configuracion, q, greatest);
         resultados.push_back({q, numComponentes});
+
+        if(greatest >= compr) cout << "Threshold at " << q << endl;
 
         // Verificar si ya se ha producido la percolación
         if (not percolation) {

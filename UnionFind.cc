@@ -48,3 +48,7 @@ int UnionFind::numComponents(int n) {
     }
     return count;
 }
+
+int UnionFind::get_size(int n) {
+    return size[n];
+}

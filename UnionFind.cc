@@ -34,10 +34,6 @@ void UnionFind::unite(int u, int v) {
         if (size[rootU] < size[rootV]) swap(rootU, rootV);
         parent[rootV] = rootU;
         size[rootU] += size[rootV];
-        int aux = size[rootU];
-        size[u] = aux;
-        size[v] = aux;
-        size[rootV] = aux;
     }
 }
 

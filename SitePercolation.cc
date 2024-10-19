@@ -65,7 +65,7 @@ int SitePercolation::generate_single_percolation(const vector<Edge>& aristas, co
         int v = arista.second;
         if (nodoActivo[u] && nodoActivo[v]) {  // Unir solo nodos activos
             uf.unite(u, v);
-            int newgreatest = max(uf.size[u],uf.size[v]);
+            int newgreatest = max(uf.get_size(u),uf.get_size(v));
             greatest = max(greatest,newgreatest);
             uf_aux.unite(u, v);
         }

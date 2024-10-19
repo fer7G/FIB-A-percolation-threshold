@@ -2,19 +2,38 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <cmath>
 
 /**
  * Constructor que inicializa la clase con el número de nodos.
  * Inicializa current_q en 0 para comenzar desde la percolación mínima.
  */
-BondPercolation::BondPercolation(int numNodos) : uf(numNodos), numNodos(numNodos), current_q(0.0) {}
+BondPercolation::BondPercolation(int numNodos) : uf(numNodos), uf_aux(numNodos + 2), numNodos(numNodos), current_q(0.0) {
+    // Los supernodos se colocan en las posiciones numNodos y numNodos + 1 en la estructura auxiliar
+    superTop = numNodos;
+    superBottom = numNodos + 1;
+}
+
+/**
+ * Inicializa los supernodos conectando los nodos del top y bottom en la estructura auxiliar.
+ */
+void BondPercolation::initialize_supernodes() {
+    int grid_size = sqrt(numNodos);  // Tamaño de la grilla
+    // Conectar el superTop a los nodos del top y el superBottom a los nodos del bottom
+    for (int i = 0; i < grid_size; ++i) {
+        uf_aux.unite(superTop, i);  // Conectar el supertop con los nodos del top
+        uf_aux.unite(superBottom, numNodos - grid_size + i);  // Conectar el superbottom con los nodos del bottom
+    }
+}
 
 /**
  * Genera una configuración de pesos aleatorios para las aristas.
  */
 vector<pair<Edge, double>> BondPercolation::generate_configuration(const vector<Edge>& aristas) {
     vector<pair<Edge, double>> configuracion;
-    srand(time(0));
+
+    unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+    srand(seed);
 
     for (const auto& arista : aristas) {
         double peso = static_cast<double>(rand()) / RAND_MAX;  // Peso aleatorio entre 0 y 1
@@ -37,6 +56,7 @@ int BondPercolation::generate_single_percolation(const vector<pair<Edge, double>
     for (const auto& [arista, peso] : configuracion) {
         if (peso > current_q && peso <= q) {
             uf.unite(arista.first, arista.second);  // Unir si el peso está en el rango correcto
+            uf_aux.unite(arista.first, arista.second);  // Unir en la estructura auxiliar
         }
     }
 
@@ -53,17 +73,9 @@ int BondPercolation::generate_single_percolation(const vector<pair<Edge, double>
 vector<pair<double, int>> BondPercolation::generate_full_percolation(const vector<pair<Edge, double>>& configuracion, double step) {
     vector<pair<double, int>> resultados;
 
-    vector<int> top_nodes;    // Indices de los nodos de la fila superior
-    vector<int> bottom_nodes; // Indices de los nodos de la fila inferior
+    initialize_supernodes();
 
     bool percolation = false;  // Bandera para indicar si se ha producido la percolación
-
-    // Inicializar los nodos del top y bottom (esto depende del tamaño y estructura de la cuadrícula)
-    int grid_size = sqrt(numNodos);  // Asumimos una cuadrícula cuadrada
-    for (int i = 0; i < grid_size; ++i) {
-        top_nodes.push_back(i);  // Los primeros nodos son del top
-        bottom_nodes.push_back(numNodos - grid_size + i);  // Los últimos nodos son del bottom
-    }
 
     // Recorremos los valores de q entre 0 y 1 usando el step
     for (double q = 0.0; q <= 1.0 + 1e-10; q += step) {
@@ -72,8 +84,11 @@ vector<pair<double, int>> BondPercolation::generate_full_percolation(const vecto
 
         // Verificar si ya se ha producido la percolación
         if (not percolation) {
-            percolation = has_percolation(top_nodes, bottom_nodes);
-            if (percolation) cout << "Percolación detectada a q = " << q_c << endl;
+            percolation = has_percolation();
+            if (percolation) {
+                q_c = q;  // Guardar el valor de q crítico
+                cout << "Percolación detectada a q = " << q_c << endl;
+            }
         }
     }
 
@@ -83,16 +98,6 @@ vector<pair<double, int>> BondPercolation::generate_full_percolation(const vecto
 /**
  * Verifica si se ha producido la percolación, es decir, si existe un camino entre el top y el bottom.
  */
-bool BondPercolation::has_percolation(const vector<int>& top_nodes, const vector<int>& bottom_nodes) {
-    // Verificamos si algún nodo de la fila superior está conectado con algún nodo de la fila inferior
-    for (int top_node : top_nodes) {
-        for (int bottom_node : bottom_nodes) {
-            if (uf.find(top_node) == uf.find(bottom_node)) {
-                // Si están conectados, se ha producido la percolación
-                q_c = current_q;  // Guardar el valor de q crítico
-                return true;
-            }
-        }
-    }
-    return false;  // No se ha producido la percolación
+bool BondPercolation::has_percolation() {
+    return uf_aux.find(superTop) == uf_aux.find(superBottom);
 }

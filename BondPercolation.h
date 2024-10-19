@@ -18,6 +18,11 @@ public:
     BondPercolation(int numNodos);
 
     /**
+     * Inicializa los supernodos conectando los nodos del top y bottom en la estructura auxiliar.
+     */
+    void initialize_supernodes();
+
+    /**
      * Genera una configuración de pesos aleatorios para las aristas.
      *
      * @param aristas Vector de aristas del grafo.
@@ -49,7 +54,7 @@ public:
      *
      * @return Verdadero si se ha producido la percolación, falso en caso contrario.
      */
-    bool has_percolation(const vector<int>& top_nodes, const vector<int>& bottom_nodes);
+    bool has_percolation();
 
     /**
      * Devuelve el valor de q crítico.
@@ -60,9 +65,12 @@ public:
 
 private:
     UnionFind uf;  // Objeto UnionFind para manejar la conectividad dinámica del grafo.
+    UnionFind uf_aux; // Estructura auxiliar para manejar los supernodos
     int numNodos;  // Número de nodos en el grafo.
     double current_q; // Valor actual de q
     double q_c;
+    int superTop;
+    int superBottom;
 };
 
 #endif

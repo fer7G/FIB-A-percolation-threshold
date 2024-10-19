@@ -53,11 +53,46 @@ int BondPercolation::generate_single_percolation(const vector<pair<Edge, double>
 vector<pair<double, int>> BondPercolation::generate_full_percolation(const vector<pair<Edge, double>>& configuracion, double step) {
     vector<pair<double, int>> resultados;
 
+    vector<int> top_nodes;    // Indices de los nodos de la fila superior
+    vector<int> bottom_nodes; // Indices de los nodos de la fila inferior
+
+    bool percolation = false;  // Bandera para indicar si se ha producido la percolación
+
+    // Inicializar los nodos del top y bottom (esto depende del tamaño y estructura de la cuadrícula)
+    int grid_size = sqrt(numNodos);  // Asumimos una cuadrícula cuadrada
+    for (int i = 0; i < grid_size; ++i) {
+        top_nodes.push_back(i);  // Los primeros nodos son del top
+        bottom_nodes.push_back(numNodos - grid_size + i);  // Los últimos nodos son del bottom
+    }
+
     // Recorremos los valores de q entre 0 y 1 usando el step
-    for (double q = 0.0; q <= 1.0; q += step) {
+    for (double q = 0.0; q <= 1.0 + 1e-10; q += step) {
         int numComponentes = generate_single_percolation(configuracion, q);
         resultados.push_back({q, numComponentes});
+
+        // Verificar si ya se ha producido la percolación
+        if (not percolation) {
+            percolation = has_percolation(top_nodes, bottom_nodes);
+            if (percolation) cout << "Percolación detectada a q = " << q_c << endl;
+        }
     }
 
     return resultados;
+}
+
+/**
+ * Verifica si se ha producido la percolación, es decir, si existe un camino entre el top y el bottom.
+ */
+bool BondPercolation::has_percolation(const vector<int>& top_nodes, const vector<int>& bottom_nodes) {
+    // Verificamos si algún nodo de la fila superior está conectado con algún nodo de la fila inferior
+    for (int top_node : top_nodes) {
+        for (int bottom_node : bottom_nodes) {
+            if (uf.find(top_node) == uf.find(bottom_node)) {
+                // Si están conectados, se ha producido la percolación
+                q_c = current_q;  // Guardar el valor de q crítico
+                return true;
+            }
+        }
+    }
+    return false;  // No se ha producido la percolación
 }

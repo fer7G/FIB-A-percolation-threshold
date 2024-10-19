@@ -44,10 +44,25 @@ public:
      */
     vector<pair<double, int>> generate_full_percolation(const vector<pair<Edge, double>>& configuracion, double step);
 
+    /**
+     * Función que verifica si se ha producido la percolación (si existe un camino del top al bottom).
+     *
+     * @return Verdadero si se ha producido la percolación, falso en caso contrario.
+     */
+    bool has_percolation(const vector<int>& top_nodes, const vector<int>& bottom_nodes);
+
+    /**
+     * Devuelve el valor de q crítico.
+     *
+     * @return q crítico, si se ha producido la percolación.
+     */
+    double get_critical_q() const { return q_c; }
+
 private:
     UnionFind uf;  // Objeto UnionFind para manejar la conectividad dinámica del grafo.
     int numNodos;  // Número de nodos en el grafo.
     double current_q; // Valor actual de q
+    double q_c;
 };
 
 #endif

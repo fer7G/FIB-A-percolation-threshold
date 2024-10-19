@@ -18,6 +18,7 @@ def run_percolation_program(executable, dimacs_file, percolation_type, step):
         print("Error running the program:", result.stderr)
         return None
 
+
     # Parse output to retrieve results
     results = []
     for line in result.stdout.splitlines():
@@ -28,24 +29,28 @@ def run_percolation_program(executable, dimacs_file, percolation_type, step):
             num_components = int(parts[1].split("= ")[1])
             results.append((q_value, num_components))
 
-    return results
+        elif line.startswith("Percolación detectada a q = "):
+            percolationThreshold = float(line.split("= ")[1])
+            print(percolationThreshold)
 
-def save_results_to_excel(results, filename):
+    return results,percolationThreshold
+
+def save_results_to_excel(results, filename, percolThresh):
     df_cols = pd.DataFrame(results, columns=['q', 'Componentes Conexos'])
     df_espacio = pd.DataFrame(columns=['q', 'Componentes Conexos'], index=[-1])  # Using -1 or another unique index
+    df_percolThresh = pd.DataFrame({'Umbral de Percolación': [percolThresh]})
 
-    #Comprueba que el archivo exista, y en caso
-    if os.path.exists("resultados_percolacion.xlsx"):
-        df_existente = pd.read_excel("resultados_percolacion.xlsx")
-        df_total = pd.concat([df_existente, df_espacio, df_cols], ignore_index=True)
+    if os.path.exists(filename):
+        df_existente = pd.read_excel(filename)
+        df_total = pd.concat([df_existente, df_espacio, df_cols, df_percolThresh], ignore_index=True)
     else:
         df_total = df_cols
 
     # Guardar el archivo actualizado
-    df_total.to_excel("resultados_percolacion.xlsx", index=False)
-    print("Resultados acumulados guardados en 'resultados_percolacion.xlsx'")
+    df_total.to_excel(filename, index=False)
+    print("Resultados acumulados guardados en ",filename)
 
-def plot_results(filename):
+def plot_results(filename, outputPhoto):
     # Load the Excel file
     df = pd.read_excel(filename)
     
@@ -57,19 +62,23 @@ def plot_results(filename):
     plt.title("Componentes Conexos vs Probabilidad de Percolación")
     plt.legend()
     plt.grid()
-    plt.savefig("plot_percolation_results.png")  # Save the plot as a file
+    plt.savefig(outputPhoto)  # Save the plot as a file
     plt.show()
 
 
 # Parameters for the program execution
 executable = "./programa"  # Update this with the path to your executable
-dimacs_file = "malla_cuadrada.dimacs"
-percolation_type = 1  # 1 for Bond Percolation, 2 for Site Percolation
-step = 0.1
+dimacs_file = input("Enter a dimacs file to read the graph: \n")
+percolation_type = input("Do you want Bond(1) or Site(2) percolation: \n")  # 1 for Bond Percolation, 2 for Site Percolation
+step = input("Enter the step: \n")
+percolationThreshold = 0.0
+outputPhoto = input("Enter a file to output the graph: \n")
+excelFile = input("Enter the excel file: \n")
 
-# Run the C++ program and collect results
-results = run_percolation_program(executable, dimacs_file, percolation_type, step)
-# Save to Excel if results were obtained
-if results:
-    save_results_to_excel(results, "resultados_percolacion.xlsx")
-    plot_results("resultados_percolacion.xlsx")
+for i in range(1,10):
+    print("Running execution: ", i)
+    results,percolationThreshold = run_percolation_program(executable, dimacs_file, percolation_type, step)
+    save_results_to_excel(results, excelFile, percolationThreshold)
+
+
+plot_results(excelFile, outputPhoto)

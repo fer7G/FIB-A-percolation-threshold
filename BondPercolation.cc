@@ -46,7 +46,7 @@ vector<pair<Edge, double>> BondPercolation::generate_configuration(const vector<
 /**
  * Realiza una percolación incremental. Solo se procesan las aristas cuyo peso esté entre current_q y el nuevo q.
  */
-int BondPercolation::generate_single_percolation(const vector<pair<Edge, double>>& configuracion, double q) {
+int BondPercolation::generate_single_percolation(const vector<pair<Edge, double>>& configuracion, double q, int &greatest) {
     if (q < current_q) {
         cerr << "Error: No se puede realizar una percolación con un q menor que el actual." << endl;
         return uf.numComponents(numNodos);  // Devuelve el número actual de componentes si no es válido
@@ -56,6 +56,8 @@ int BondPercolation::generate_single_percolation(const vector<pair<Edge, double>
     for (const auto& [arista, peso] : configuracion) {
         if (peso > current_q && peso <= q) {
             uf.unite(arista.first, arista.second);  // Unir si el peso está en el rango correcto
+            int newgreatest = max(uf.size[arista.first],uf.size[arista.second]);
+            greatest = max(greatest,newgreatest);
             uf_aux.unite(arista.first, arista.second);  // Unir en la estructura auxiliar
         }
     }
@@ -72,6 +74,8 @@ int BondPercolation::generate_single_percolation(const vector<pair<Edge, double>
  */
 vector<pair<double, int>> BondPercolation::generate_full_percolation(const vector<pair<Edge, double>>& configuracion, double step) {
     vector<pair<double, int>> resultados;
+    int greatest = 1;
+    int compr = numNodos/2;
 
     initialize_supernodes();
 
@@ -79,8 +83,10 @@ vector<pair<double, int>> BondPercolation::generate_full_percolation(const vecto
 
     // Recorremos los valores de q entre 0 y 1 usando el step
     for (double q = 0.0; q <= 1.0 + 1e-10; q += step) {
-        int numComponentes = generate_single_percolation(configuracion, q);
+        int numComponentes = generate_single_percolation(configuracion, q, greatest);
         resultados.push_back({q, numComponentes});
+        
+        if (greatest >= compr) cout << "Threshold at " << q << endl;//GCC cubre la mitad o mas parte del grafo
 
         // Verificar si ya se ha producido la percolación
         if (not percolation) {

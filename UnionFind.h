@@ -11,7 +11,6 @@ using namespace std;
 class UnionFind {
 public:
     
-    vector<int> size;    // Almacena el tamaño de cada conjunto.
     /**
      * Constructor que inicializa la estructura de Union-Find.
      * Cada nodo es su propio "padre" (representante) y el tamaño inicial de cada conjunto es 1.
@@ -49,8 +48,11 @@ public:
      */
     int numComponents(int n);
 
+    int get_size(int n);//Devuelve size[n].
+
 private:
     vector<int> parent;  // Almacena el representante (padre) de cada nodo.
+    vector<int> size;    // Almacena el tamaño de cada conjunto.
 };
 
 #endif

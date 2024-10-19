@@ -20,6 +20,8 @@ A continuación se mencionan algunas referencias y conceptos interesantes para e
   Disponible en: no encontrado con acceso no restringido
   Artículo original sobre los procesos de percolación
 
+- **PAPER (*MUY IMPORTANTE*) - HK algorithm for estimation of percolation in square lattice using Python programing**
+
 ## Conceptos
 
 - Invasion percolation

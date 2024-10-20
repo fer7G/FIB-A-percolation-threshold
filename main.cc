@@ -41,16 +41,22 @@ int main() {
         auto start = chrono::high_resolution_clock::now();
 
         // Realizar una percolación completa
-        vector<pair<double, int>> resultados = percolacion.generate_full_percolation(configuracion, step);
+        vector<tuple<double, int, int, double>> resultados = percolacion.generate_full_percolation(configuracion, step);
 
         auto end = chrono::high_resolution_clock::now();
         chrono::duration<double> elapsed = end - start;
         cout << "Tiempo de ejecución: " << elapsed.count() << " segundos" << endl;
 
-        // Mostrar resultados
+        // Mostrar encabezado de los resultados con tabs para alineación
         cout << "Resultados de la percolación por aristas completa:\n";
-        for (const auto& [q, numComponentes] : resultados) {
-            cout << "q = " << q << ", componentes conexos = " << numComponentes << endl;
+        cout << "q\t\tComponentes Conexos\tTamaño Clúster Mayor\tN_sc\n";
+
+        // Mostrar resultados
+        for (const auto& [q, numComponentes, greatest, Nsc] : resultados) {
+            cout << q << "\t\t" 
+                << numComponentes << "\t\t\t"
+                << greatest << "\t\t\t"
+                << Nsc << endl;
         }
 
     } else if (opcion == 2) {
@@ -64,16 +70,22 @@ int main() {
         auto start = chrono::high_resolution_clock::now();
 
         // Realizar una percolación completa
-        vector<pair<double, int>> resultados = percolacion.generate_full_percolation(aristas, configuracion, step);
+        vector<tuple<double, int, int, double>> resultados = percolacion.generate_full_percolation(aristas, configuracion, step);
 
         auto end = chrono::high_resolution_clock::now();
         chrono::duration<double> elapsed = end - start;
         cout << "Tiempo de ejecución: " << elapsed.count() << " segundos" << endl;
 
-        // Mostrar resultados
+        // Mostrar encabezado de los resultados con tabs para alineación
         cout << "Resultados de la percolación por nodos completa:\n";
-        for (const auto& [q, numComponentes] : resultados) {
-            cout << "q = " << q << ", componentes conexos = " << numComponentes << endl;
+        cout << "q\t\tComponentes Conexos\tTamaño Clúster Mayor\tN_sc\n";
+
+        // Mostrar resultados
+        for (const auto& [q, numComponentes, greatest, Nsc] : resultados) {
+            cout << q << "\t\t" 
+                << numComponentes << "\t\t\t"
+                << greatest << "\t\t\t"
+                << Nsc << endl;
         }
 
     } else {

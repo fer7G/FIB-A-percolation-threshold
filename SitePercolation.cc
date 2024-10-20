@@ -3,6 +3,7 @@
 #include <ctime>
 #include <iostream>
 #include <cmath>
+#include <chrono>
 
 /**
  * Constructor que inicializa la clase con el número de nodos.
@@ -65,8 +66,11 @@ int SitePercolation::generate_single_percolation(const vector<Edge>& aristas, co
         int v = arista.second;
         if (nodoActivo[u] && nodoActivo[v]) {  // Unir solo nodos activos
             uf.unite(u, v);
-            int newgreatest = max(uf.get_size(u),uf.get_size(v));
-            greatest = max(greatest,newgreatest);
+
+            // Actualizar el tamaño del clúster más grande
+            int newGreatest = max(uf.get_size(arista.first), uf.get_size(arista.second));
+            greatest = max(greatest, newGreatest);
+
             uf_aux.unite(u, v);
         }
     }
@@ -81,10 +85,9 @@ int SitePercolation::generate_single_percolation(const vector<Edge>& aristas, co
  * Realiza una percolación completa para valores de q entre 0 y 1, y devuelve la relación
  * entre q y el número de componentes conexos.
  */
-vector<pair<double, int>> SitePercolation::generate_full_percolation(const vector<Edge>& aristas, const vector<double>& configuracion, double step) {
-    vector<pair<double, int>> resultados;
-    int greatest = 1;
-    int compr = numNodos/2;
+vector<tuple<double, int, int, double>> SitePercolation::generate_full_percolation(const vector<Edge>& aristas, const vector<double>& configuracion, double step) {
+    vector<tuple<double, int, int, double>> resultados; // Tupla para q, numComponentes, tamaño del clúster más grande, N_sc
+    int greatest = 1;  // Inicializa el clúster más grande como 1 (mínimo posible)
 
     initialize_supernodes();
 
@@ -93,17 +96,18 @@ vector<pair<double, int>> SitePercolation::generate_full_percolation(const vecto
     // Recorremos los valores de q entre 0 y 1 usando el step
     for (double q = 0.0; q <= 1.0 + 1e-10; q += step) {
         int numComponentes = generate_single_percolation(aristas, configuracion, q, greatest);
-        resultados.push_back({q, numComponentes});
 
-        if(greatest >= compr) cout << "Threshold at " << q << endl;
+        // Calcular N_sc, que es la fracción de nodos en el clúster más grande
+        double Nsc = static_cast<double>(greatest) / numNodos;
+
+        // Almacenar los resultados: q, numComponentes, tamaño del clúster más grande, N_sc
+        resultados.push_back({q, numComponentes, greatest, Nsc});
 
         // Verificar si ya se ha producido la percolación
-        if (not percolation) {
-            percolation = has_percolation();
-            if (percolation) {
-                q_c = q;  // Guardar el valor de q crítico
-                cout << "Percolación detectada a q = " << q_c << endl;
-            }
+        if (not percolation and has_percolation()) {
+            q_c = q;  // Guardar el valor de q crítico
+            percolation = true;
+            cout << "Percolación detectada a q = " << q_c << endl;
         }
     }
 

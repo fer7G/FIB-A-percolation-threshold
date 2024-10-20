@@ -44,7 +44,7 @@ def save_results_to_excel(results, filename, percolThresh):
 
     if os.path.exists(filename):
         df_existente = pd.read_excel(filename)
-        df_total = pd.concat([df_existente, df_espacio, df_cols, df_percolThresh], ignore_index=True)
+        df_total = pd.concat([df_existente, df_espacio, df_cols, df_percolThresh], ignore_index=False)
     else:
         df_total = df_cols
 
@@ -101,7 +101,6 @@ excelFile = input("Enter the Excel file to save the results: \n")
 for i in range(1, 2):
     print("Running execution: ", i)
     results, percolationThreshold = run_percolation_program(executable, dimacs_file, percolation_type, step)
-    print(results)
     if results:
         save_results_to_excel(results, excelFile, percolationThreshold)
 

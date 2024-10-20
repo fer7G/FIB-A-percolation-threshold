@@ -53,6 +53,7 @@ int main() {
 
         // Mostrar resultados
         for (const auto& [q, numComponentes, greatest, Nsc] : resultados) {
+            cout << "q = ";
             cout << q << "\t\t" 
                 << numComponentes << "\t\t\t"
                 << greatest << "\t\t\t"
@@ -82,9 +83,10 @@ int main() {
 
         // Mostrar resultados
         for (const auto& [q, numComponentes, greatest, Nsc] : resultados) {
-            cout << q << "\t\t" 
-                << numComponentes << "\t\t\t"
-                << greatest << "\t\t\t"
+            cout << "q = ";
+            cout << q <<", "
+                << numComponentes << ", "
+                << greatest << ", "
                 << Nsc << endl;
         }
 

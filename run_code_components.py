@@ -98,7 +98,7 @@ percolationThreshold = 0.0
 output_photo_base = input("Enter the base name for the output graph files (without extension): \n")
 excelFile = input("Enter the Excel file to save the results: \n")
 
-for i in range(1, 2):
+for i in range(1, 3):
     print("Running execution: ", i)
     results, percolationThreshold = run_percolation_program(executable, dimacs_file, percolation_type, step)
     if results:

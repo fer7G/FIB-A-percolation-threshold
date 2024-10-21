@@ -40,16 +40,20 @@ def run_percolation_program(executable, dimacs_file, percolation_type, step):
     return results, percolationThreshold
 
 
-def plot_variance_vs_iterations(iterations, variances):
-    # Plot the variance vs number of iterations
+def plot_variance_vs_iterations(iterations, variances, variance_means):
+    # Plot the variance vs number of iterations with smaller dots
     plt.figure(figsize=(10, 6))
-    plt.plot(iterations, variances, marker="o", linestyle="-", color="r", label="Variance")
+    plt.plot(iterations, variances, marker="o", linestyle="-", color="r", label="Variance", markersize=2)  # Adjust markersize
+    
+    # Plot the cumulative mean of the variances
+    plt.plot(iterations, variance_means, linestyle="--", color="b", label="Mean Variance")
+    
     plt.xlabel("Number of Iterations")
     plt.ylabel("Variance of Percolation Threshold")
-    plt.title("Variance of Percolation Threshold vs Number of Iterations")
+    plt.title("Variance and Mean of Percolation Threshold Variance vs Number of Iterations")
     plt.legend()
     plt.grid()
-    plt.savefig("variance_percolation_iterations2.png")  # Save the plot as a file
+    plt.savefig("variance_percolation_iterations_with_mean.png")
     plt.show()
 
 
@@ -58,7 +62,7 @@ executable = "./programa"  # Path to the C++ executable
 dimacs_file = "malla.dimacs"  # DIMACS file
 percolation_type = 1  # Bond(1) or Site(2) percolation
 step = 0.01  # Step for q
-epsilon = 1e-7  # Threshold for variance stability
+epsilon = 6e-8  # Threshold for variance stability
 max_iterations = 10000  # Maximum number of iterations
 window_size = 15  # Number of iterations to check for stability
 
@@ -66,6 +70,7 @@ window_size = 15  # Number of iterations to check for stability
 thresholds = []
 iterations = []
 variances = []
+variance_means = []
 
 for i in range(1, max_iterations + 1):
     print(f"Running iteration {i}")
@@ -81,7 +86,13 @@ for i in range(1, max_iterations + 1):
         variance = np.var(thresholds)
         iterations.append(i)
         variances.append(variance)
+        
+        # Calculate cumulative mean of variance
+        variance_mean = np.mean(variances)
+        variance_means.append(variance_mean)
+        
         print(f"Variance after {i} iterations: {variance}")
+        print(f"Mean of variance after {i} iterations: {variance_mean}")
 
         # Check variance stabilization over the rolling window
         if len(variances) > window_size:
@@ -99,11 +110,12 @@ for i in range(1, max_iterations + 1):
     else:
         # If only one threshold, variance is zero
         variances.append(0)
+        variance_means.append(0)
         iterations.append(i)
 
 # Calculate total variance after the final iteration
 total_variance = np.var(thresholds)
 print(f"Total variance after {i} iterations: {total_variance}")
 
-# Plot the variance vs iterations
-plot_variance_vs_iterations(iterations, variances)
+# Plot the variance vs iterations with the mean variance
+plot_variance_vs_iterations(iterations, variances, variance_means)

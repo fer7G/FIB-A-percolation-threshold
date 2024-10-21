@@ -53,13 +53,11 @@ int main() {
 
         // Mostrar resultados
         for (const auto& [q, numComponentes, greatest, Nsc] : resultados) {
-            for (const auto& [q, numComponentes, greatest, Nsc] : resultados) {
             cout << "q = ";
             cout << q <<", "
                 << numComponentes << ", "
                 << greatest << ", "
                 << Nsc << endl;
-        }
         }
 
     } else if (opcion == 2) {

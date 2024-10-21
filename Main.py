@@ -56,42 +56,54 @@ def save_results_to_csv(results, filename, percolThresh):
     df_total.to_csv(filename, index=False)
     print("Resultados acumulados guardados en ", filename)
 
-def plot_results(filename, output_photo_base):
-    # Load the CSV file
-    df = pd.read_csv(filename)
-
-    # Plot q values vs. number of connected components
+def plot_results(filenames, output_photo_base, colors):
+    # Initialize a new figure
     plt.figure(figsize=(10, 6))
-    plt.plot(df["q"], df["Componentes Conexos"], marker="o", linestyle="-", color="b", label="Componentes Conexos", markersize=2)
+
+    for i, filename in enumerate(filenames):
+        df = pd.read_csv(filename)
+
+        # Plot q values vs. number of connected components
+        plt.plot(df["q"], df["Componentes Conexos"], marker="o", linestyle="-", color=colors[i % len(colors)], 
+                 label=f"Componentes Conexos - {os.path.basename(filename)}", markersize=2)
+
     plt.xlabel("Probabilidad de Percolación (q)")
     plt.ylabel("Número de Componentes Conexos")
     plt.title("Componentes Conexos vs Probabilidad de Percolación")
     plt.legend()
     plt.grid()
     plt.savefig(f'{output_photo_base}_componentes_conexos.png')  # Save plot
-    plt.show()
+    plt.close()  # Close the figure to avoid overlapping
 
-    # Plot q values vs Tamaño Clúster Mayor
+    # Similar plotting for Tamaño Clúster Mayor
     plt.figure(figsize=(10, 6))
-    plt.plot(df["q"], df["Tamaño Clúster Mayor"], marker="o", linestyle="-", color="r", label="Tamaño Clúster Mayor", markersize=2)
+    for i, filename in enumerate(filenames):
+        df = pd.read_csv(filename)
+        plt.plot(df["q"], df["Tamaño Clúster Mayor"], marker="o", linestyle="-", color=colors[i % len(colors)], 
+                 label=f"Tamaño Clúster Mayor - {os.path.basename(filename)}", markersize=2)
+
     plt.xlabel("Probabilidad de Percolación (q)")
     plt.ylabel("Tamaño Clúster Mayor")
     plt.title("Tamaño Clúster Mayor vs Probabilidad de Percolación")
     plt.legend()
     plt.grid()
     plt.savefig(f'{output_photo_base}_cluster_mayor.png')  # Save plot
-    plt.show()
+    plt.close()
 
-    # Plot q values vs N_sc
+    # Similar plotting for N_sc
     plt.figure(figsize=(10, 6))
-    plt.plot(df["q"], df["N_sc"], marker="o", linestyle="-", color="g", label="N_sc", markersize=2)
+    for i, filename in enumerate(filenames):
+        df = pd.read_csv(filename)
+        plt.plot(df["q"], df["N_sc"], marker="o", linestyle="-", color=colors[i % len(colors)], 
+                 label=f"N_sc - {os.path.basename(filename)}", markersize=2)
+
     plt.xlabel("Probabilidad de Percolación (q)")
     plt.ylabel("N_sc")
     plt.title("N_sc vs Probabilidad de Percolación")
     plt.legend()
     plt.grid()
     plt.savefig(f'{output_photo_base}_n_sc.png')  # Save plot
-    plt.show()
+    plt.close()
 
 # Parameters for the program execution
 # Parameters for the program execution
@@ -136,15 +148,21 @@ def save_averaged_results_to_csv(results_list, filename, percolThresh):
 
 # Parameters for the program execution
 executable = "./programa"  # Update with the path to your executable
-percolation_type = input("Do you want Bond(1) or Site(2) percolation: \n")  # 1 for Bond Percolation, 2 for Site Percolation
-step = input("Enter the step: \n")
-output_photo_base = input("Enter the base name for the output graph files (without extension): \n")
-csv_file = input("Enter the CSV file to save the results: \n")
+percolation_type = input("Quieres hacer percolación por aristas(1) o nodos(2): \n")  # 1 for Bond Percolation, 2 for Site Percolation
+step = input("Introduce el step: \n")
+output_photo_base = input("Introduce el nombre para las fotos resultantes(sin extension .png): \n")
+csv_file = input("Introduce el nombre del archivo .csv: \n")
 iterations = int(input("Cuantas iteraciones quieres hacer?: \n"))
 
 # User input for DIMACS files
-dimacs_files_input = input("Enter the DIMACS files separated by commas: \n")
+dimacs_files_input = input("Introduce los archivos DIMACS separados por comas: \n")
 dimacs_files = [file.strip() for file in dimacs_files_input.split(",")]
+
+# Define a color palette
+colors = ['r', 'g', 'b', 'c', 'm', 'y', 'k']  # Extend this list if you have more DIMACS files
+
+# Store the CSV filenames for each DIMACS file
+csv_filenames = []
 
 for dimacs_file in dimacs_files:
     print(f"Running experiments for {dimacs_file}")
@@ -158,9 +176,10 @@ for dimacs_file in dimacs_files:
             results_list.append(results)  # Collect results for averaging
 
     # Save averaged results to CSV after all iterations for the current graph size
-    save_averaged_results_to_csv(results_list, csv_file, percolationThreshold)
+    save_averaged_results_to_csv(results_list, f"{csv_file}_{os.path.basename(dimacs_file)}.csv", percolationThreshold)
+    csv_filenames.append(f"{csv_file}_{os.path.basename(dimacs_file)}.csv")  # Collect CSV filenames
 
-    # Plot the results from the CSV file after all iterations for the current graph size
-plot_results(csv_file, output_photo_base)
+# Plot the results from all CSV files
+plot_results(csv_filenames, output_photo_base, colors)
 
     

@@ -1,6 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-
+import random
 
 def generate_random_erdos_graph(num_nodes, edge_prob):
     G = nx.erdos_renyi_graph(num_nodes, edge_prob)
@@ -20,8 +20,8 @@ def generate_malla(x, y):
 
 def generate_random_geometric_graph(num_nodes, radius):
     # Generate a random geometric graph
-    G = nx.random_geometric_graph(num_nodes, radius)
-    
+    pos = {i: (random.gauss(0, 2), random.gauss(0, 2)) for i in range(n)}
+    G = nx.random_geometric_graph(num_nodes, 0.2, pos=pos)
     # Check if the graph is connected, and connect disjoint components if needed
     if not nx.is_connected(G):
         # Get the connected components
@@ -66,17 +66,17 @@ if tipo == "m":
     n, m = map(int, input("Introduce la altura y anchura de la malla (separados por un espacio): ").split())
     graph = generate_malla(n, m)
     #draw_graph_malla(graph)
-    if guardar: write_graph_to_file(fileName, graph, graph.number_of_nodes())
+    if guardar == 'y': write_graph_to_file(fileName, graph, graph.number_of_nodes())
 
 if tipo == "g":
     n = int(input("Introduce el número de nodos: "))
     r = float(input("Introduce el radio para las aristas: "))
     graph = generate_random_geometric_graph(n, r)
-    if guardar: write_graph_to_file(fileName, graph, graph.number_of_nodes())
+    if guardar == 'y': write_graph_to_file(fileName, graph, graph.number_of_nodes())
 
 else:
     n = int(input("Introduce el número de nodos: "))
     p = float(input("Introduce la probabilidad de las aristas: "))
     graph = generate_random_erdos_graph(n, p)
     #draw_graph_erdos_renyi(graph)
-    if guardar: write_graph_to_file(fileName, graph, graph.number_of_nodes())
+    if guardar == 'y': write_graph_to_file(fileName, graph, graph.number_of_nodes())

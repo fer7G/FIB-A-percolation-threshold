@@ -68,7 +68,7 @@ if tipo == "m":
     #draw_graph_malla(graph)
     if guardar == 'y': write_graph_to_file(fileName, graph, graph.number_of_nodes())
 
-if tipo == "g":
+elif tipo == "g":
     n = int(input("Introduce el número de nodos: "))
     r = float(input("Introduce el radio para las aristas: "))
     graph = generate_random_geometric_graph(n, r)

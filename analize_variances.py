@@ -28,8 +28,10 @@ def run_percolation_program(executable, dimacs_file, percolation_type, step):
             # Extract values of q and number of connected components
             parts = line.split(", ")
             q_value = float(parts[0].split("= ")[1])
-            num_components = int(parts[1].split("= ")[1])
-            results.append((q_value, num_components))
+            num_components = int(parts[1])
+            cluster_size = int(parts[2])
+            N_sc = float(parts[3])
+            results.append((q_value, num_components, cluster_size, N_sc))
 
         elif line.startswith("Percolación detectada a q ="):
             percolationThreshold = float(line.split("= ")[1])
@@ -51,46 +53,57 @@ def plot_variance_vs_iterations(iterations, variances):
     plt.show()
 
 
-# Parameters for the program execution
-executable = "./programa"  # Update this with the path to your executable
-dimacs_file = "malla_cuadrada.dimacs"
-percolation_type = 1  # 1 for Bond Percolation, 2 for Site Percolation
-step = 0.01
+# Parameters
+executable = "./programa"  # Path to the C++ executable
+dimacs_file = "malla.dimacs"  # DIMACS file
+percolation_type = 1  # Bond(1) or Site(2) percolation
+step = 0.01  # Step for q
+epsilon = 1e-7  # Threshold for variance stability
+max_iterations = 10000  # Maximum number of iterations
+window_size = 15  # Number of iterations to check for stability
 
-# To store percolation thresholds from each iteration
+# Initialize variables
 thresholds = []
 iterations = []
 variances = []
 
-# Perform growing iterations: first 100, then 200, ..., up to 1000 iterations
-for i in range(10, 101, 10):
-    print(f"Running {i} iterations")
+for i in range(1, max_iterations + 1):
+    print(f"Running iteration {i}")
     
-    for j in range(i - len(thresholds)):  # Only run new iterations
-        results, percolationThreshold = run_percolation_program(executable, dimacs_file, percolation_type, step)
-        
-        if percolationThreshold is not None:
-            thresholds.append(percolationThreshold)
+    # Run the C++ program and get results
+    results, percolationThreshold = run_percolation_program(executable, dimacs_file, percolation_type, step)
+    
+    if percolationThreshold is not None:
+        thresholds.append(percolationThreshold)
 
-
-    # Calculate the variance for the current number of iterations
-    if thresholds:
+    # Calculate the variance for the current number of thresholds
+    if len(thresholds) > 1:
         variance = np.var(thresholds)
         iterations.append(i)
         variances.append(variance)
         print(f"Variance after {i} iterations: {variance}")
 
-# Calculate total variance after 1000 iterations
+        # Check variance stabilization over the rolling window
+        if len(variances) > window_size:
+            # Calculate the average change in variance over the window
+            variance_changes = [
+                abs(variances[-(k+1)] - variances[-(k+2)]) for k in range(window_size-1)
+            ]
+            avg_change_in_variance = np.mean(variance_changes)
+
+            print(f"Average change in variance over the last {window_size} iterations: {avg_change_in_variance}")
+
+            if avg_change_in_variance < epsilon:
+                print(f"Variance has stabilized at iteration {i}")
+                break
+    else:
+        # If only one threshold, variance is zero
+        variances.append(0)
+        iterations.append(i)
+
+# Calculate total variance after the final iteration
 total_variance = np.var(thresholds)
-print(f"Total variance after 1000 iterations: {total_variance}")
+print(f"Total variance after {i} iterations: {total_variance}")
 
-# # Calculate explained variance percentage for each iteration set
-# for i in range(30, 901, 30):
-#     current_variance = np.var(thresholds[:i])
-#     explained_variance_percentage = (current_variance / total_variance) * 100
-#     explained_variances.append(explained_variance_percentage)
-#     iterations.append(i)
-#     print(f"Explained variance after {i} iterations: {explained_variance_percentage}%")
-
-# Plot explained variance as a function of the number of iterations
+# Plot the variance vs iterations
 plot_variance_vs_iterations(iterations, variances)

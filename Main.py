@@ -103,6 +103,7 @@ for i in range(1, 3):
     results, percolationThreshold = run_percolation_program(executable, dimacs_file, percolation_type, step)
     if results:
         save_results_to_excel(results, excelFile, percolationThreshold)
+    
 
 # Plot the results from the Excel file
 plot_results(excelFile, output_photo_base)

@@ -3,7 +3,7 @@ TARGET = programa
 
 # Compilador y opciones
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall
+CXXFLAGS = -std=c++17 -Wall -O2
 
 # Archivos fuente y cabeceras
 SRCS = main.cc BondPercolation.cc SitePercolation.cc lecturaGrafos.cc UnionFind.cc

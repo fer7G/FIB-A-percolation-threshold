@@ -50,5 +50,5 @@ int UnionFind::numComponents(int n) {
 }
 
 int UnionFind::get_size(int n) {
-    return size[n];
+    return size[find(n)];
 }

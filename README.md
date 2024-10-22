@@ -10,12 +10,12 @@ Este proyecto simula el proceso de percolación en diferentes tipos de grafos, i
 
 ### Prerrequisitos
 
-    -	Compilador de C++: Necesitarás un compilador que soporte C++11 o superior.
-    -	Python: Se requiere Python 3.x para ejecutar los scripts de automatización y generación de grafos. 
-    -   Para instalar las librerías necesarias de Python, ejecutar en un terminal:
-        `pip install -r requirements.txt`
-    -   Para compilar, ejecutar `make`en un terminal. 
-    -   Para limpiar los archivos binarios y .o, ejecutar `make clean`o `make distclean`en un terminal.
+- Compilador de C++: Necesitarás un compilador que soporte C++11 o superior.
+- Python: Se requiere Python 3.x para ejecutar los scripts de automatización y generación de grafos. 
+-   Para instalar las librerías necesarias de Python, ejecutar en un terminal:
+`pip install -r requirements.txt`
+-   Para compilar, ejecutar `make`en un terminal. 
+-   Para limpiar los archivos binarios y .o, ejecutar `make clean`o `make distclean`en un terminal.
 
 
 ### Pasos a seguir para ejecutar el programa:

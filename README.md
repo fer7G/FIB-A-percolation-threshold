@@ -24,9 +24,9 @@ Este proyecto simula el proceso de percolación en diferentes tipos de grafos, i
 
 Para generar un grafo, usa el script de Python graph_generator.py, ejecutando `python3 graph_generator.py`en un terminal. Este script soporta la generación de tres tipos de grafos:
 
--Malla (lattice cuadrada): Especifica las dimensiones de la cuadrícula (Int, Int).
--Kagome: Especifica las dimensiones de la cuadrícula triangular (Int, Int).
--Grafo geométrico aleatorio: Especifica el número de nodos y el radio para la formación de       aristas,un valor entre 0 y 1.
+- Malla (lattice cuadrada): Especifica las dimensiones de la cuadrícula (Int, Int).
+- Kagome: Especifica las dimensiones de la cuadrícula triangular (Int, Int).
+- Grafo geométrico aleatorio: Especifica el número de nodos y el radio para la formación de       aristas,un valor entre 0 y 1.
 
 Una vez ejecutado, se guardará en el directorio de compilación un archivo .dimacs con el nombre que le hayas dado.
 

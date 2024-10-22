@@ -4,14 +4,14 @@
 Este proyecto simula el proceso de percolación en diferentes tipos de grafos, incluyendo la percolación por aristas y percolación por nodos. Los grafos pueden ser generados como mallas cuadradas, grafos de Kagome, o grafos geométricos aleatorios. El programa permite analizar el umbral de percolación y los componentes conexos de estos grafos, entre otros valores.
 
 ### Archivos importantes
-	1.	main.cc: Programa principal en C++ para simular la percolación.
-	2.	Main.py: Script en Python para automatizar la ejecución del programa en C++ y gestionar los resultados.
-	3.	graph_generator.py: Script en Python para generar grafos y guardarlos en formato DIMACS, necesario para la entrada del programa en C++.
+1. main.cc: Programa principal en C++ para simular la percolación.
+2. Main.py: Script en Python para automatizar la ejecución del programa en C++ y gestionar los resultados.
+3. graph_generator.py: Script en Python para generar grafos y guardarlos en formato DIMACS, necesario para la entrada del programa en C++.
 
 ### Prerrequisitos
 
-	-	Compilador de C++: Necesitarás un compilador que soporte C++11 o superior.
-	-	Python: Se requiere Python 3.x para ejecutar los scripts de automatización y generación de grafos. 
+    -	Compilador de C++: Necesitarás un compilador que soporte C++11 o superior.
+    -	Python: Se requiere Python 3.x para ejecutar los scripts de automatización y generación de grafos. 
     -   Para instalar las librerías necesarias de Python, ejecutar en un terminal:
         `pip install -r requirements.txt`
     -   Para compilar, ejecutar `make`en un terminal. 
@@ -24,9 +24,9 @@ Este proyecto simula el proceso de percolación en diferentes tipos de grafos, i
 
 Para generar un grafo, usa el script de Python graph_generator.py, ejecutando `python3 graph_generator.py`en un terminal. Este script soporta la generación de tres tipos de grafos:
 
-	•	Malla (lattice cuadrada): Especifica las dimensiones de la cuadrícula (Int, Int).
-	•	Kagome: Especifica las dimensiones de la cuadrícula triangular (Int, Int).
-•	Grafo geométrico aleatorio: Especifica el número de nodos y el radio para la formación de       aristas,un valor entre 0 y 1.
+	-Malla (lattice cuadrada): Especifica las dimensiones de la cuadrícula (Int, Int).
+	-Kagome: Especifica las dimensiones de la cuadrícula triangular (Int, Int).
+	-Grafo geométrico aleatorio: Especifica el número de nodos y el radio para la formación de       aristas,un valor entre 0 y 1.
 
 Una vez ejecutado, se guardará en el directorio de compilación un archivo .dimacs con el nombre que le hayas dado.
 

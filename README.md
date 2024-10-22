@@ -36,11 +36,11 @@ Puedes automatizar múltiples ejecuciones del programa en C++ para diferentes co
 Para ejecutar el script de automatización:
 `python3 Main.py`
 El script te pedirá:
--El tipo de percolación que quieres hacer
--El incremento que quieres usar para la probabilidad de percolación
--El nombre de los archivos que contendrán los resultados en formato de gráfica
--El nombre de los archivos .csv que contendrán los resultados numéricos
--Cuántas iteraciones quieres hacer
--Los archivos dimacs que quieres leer (Para la ejecución correcta no usar más de 7)
+- El tipo de percolación que quieres hacer
+- El incremento que quieres usar para la probabilidad de percolación
+- El nombre de los archivos que contendrán los resultados en formato de gráfica
+- El nombre de los archivos .csv que contendrán los resultados numéricos
+- Cuántas iteraciones quieres hacer
+- Los archivos dimacs que quieres leer (Para la ejecución correcta no usar más de 7)
 
 Una vez terminado el programa, podrás ver los resultados en los archivos .csv y .png que se habrán generadp

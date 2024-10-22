@@ -30,7 +30,7 @@ Para generar un grafo, usa el script de Python graph_generator.py, ejecutando `p
 
 Una vez ejecutado, se guardará en el directorio de compilación un archivo .dimacs con el nombre que le hayas dado.
 
-#### Ejecutar la simulaciòn:
+#### Ejecutar la simulación:
 Puedes automatizar múltiples ejecuciones del programa en C++ para diferentes configuraciones usando el script Main.py. Este script se encargará de ejecutar el programa de percolación, capturar la salida y guardarla en un archivo.
 
 Para ejecutar el script de automatización:

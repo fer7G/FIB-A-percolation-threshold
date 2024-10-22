@@ -24,9 +24,9 @@ Este proyecto simula el proceso de percolación en diferentes tipos de grafos, i
 
 Para generar un grafo, usa el script de Python graph_generator.py, ejecutando `python3 graph_generator.py`en un terminal. Este script soporta la generación de tres tipos de grafos:
 
-	-Malla (lattice cuadrada): Especifica las dimensiones de la cuadrícula (Int, Int).
-	-Kagome: Especifica las dimensiones de la cuadrícula triangular (Int, Int).
-	-Grafo geométrico aleatorio: Especifica el número de nodos y el radio para la formación de       aristas,un valor entre 0 y 1.
+-Malla (lattice cuadrada): Especifica las dimensiones de la cuadrícula (Int, Int).
+-Kagome: Especifica las dimensiones de la cuadrícula triangular (Int, Int).
+-Grafo geométrico aleatorio: Especifica el número de nodos y el radio para la formación de       aristas,un valor entre 0 y 1.
 
 Una vez ejecutado, se guardará en el directorio de compilación un archivo .dimacs con el nombre que le hayas dado.
 
@@ -36,11 +36,11 @@ Puedes automatizar múltiples ejecuciones del programa en C++ para diferentes co
 Para ejecutar el script de automatización:
 `python3 Main.py`
 El script te pedirá:
-    -El tipo de percolación que quieres hacer
-    -El incremento que quieres usar para la probabilidad de percolación
-    -El nombre de los archivos que contendrán los resultados en formato de gráfica
-    -El nombre de los archivos .csv que contendrán los resultados numéricos
-    -Cuántas iteraciones quieres hacer
-    -Los archivos dimacs que quieres leer (Para la ejecución correcta no usar más de 7)
+-El tipo de percolación que quieres hacer
+-El incremento que quieres usar para la probabilidad de percolación
+-El nombre de los archivos que contendrán los resultados en formato de gráfica
+-El nombre de los archivos .csv que contendrán los resultados numéricos
+-Cuántas iteraciones quieres hacer
+-Los archivos dimacs que quieres leer (Para la ejecución correcta no usar más de 7)
 
 Una vez terminado el programa, podrás ver los resultados en los archivos .csv y .png que se habrán generadp

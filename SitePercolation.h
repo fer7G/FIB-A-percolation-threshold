@@ -30,23 +30,23 @@ public:
     vector<double> generate_configuration();
 
     /**
-     * Realiza una percolación para un valor dado de q y devuelve el número de componentes conexos.
+     * Realiza una percolación para un valor dado de p y devuelve el número de componentes conexos.
      *
      * @param aristas Vector de aristas del grafo.
      * @param configuracion Vector de pesos asociados a los vértices.
-     * @param q Probabilidad de que un vértice no falle.
+     * @param p Probabilidad de que un vértice no falle.
      * @return Número de componentes conexos después de la percolación.
      */
-    int generate_single_percolation(const vector<Edge>& aristas, const vector<double>& configuracion, double q, int &greatest);
+    int generate_single_percolation(const vector<Edge>& aristas, const vector<double>& configuracion, double p, int &greatest);
 
     /**
-     * Realiza una percolación completa para valores de q entre 0 y 1, y devuelve la relación
-     * entre q y el número de componentes conexos.
+     * Realiza una percolación completa para valores de p entre 0 y 1, y devuelve la relación
+     * entre p y el número de componentes conexos.
      *
      * @param aristas Vector de aristas del grafo.
      * @param configuracion Vector de pesos asociados a los vértices.
-     * @param step Valor de paso para q.
-     * @return Un vector de pares donde cada par es un valor de q y el número de componentes conexos.
+     * @param step Valor de paso para p.
+     * @return Un vector de pares donde cada par es un valor de p y el número de componentes conexos.
      */
     vector<tuple<double, int, int, double>> generate_full_percolation(const vector<Edge>& aristas, const vector<double>& configuracion, double step);
 
@@ -58,19 +58,19 @@ public:
     bool has_percolation();
 
     /**
-     * Devuelve el valor de q crítico.
+     * Devuelve el valor de p crítico.
      *
-     * @return q crítico, si se ha producido la percolación.
+     * @return p crítico, si se ha producido la percolación.
      */
-    double get_critical_q() const { return q_c; }
+    double get_critical_p() const { return p_c; }
 
 private:
     UnionFind uf;  // Objeto UnionFind para manejar la conectividad dinámica del grafo.
     UnionFind uf_aux; // Estructura auxiliar para manejar los supernodos
     int numNodos;  // Número de nodos en el grafo.
-    double current_q; // Valor actual de q
+    double current_p; // Valor actual de p
     vector<bool> nodoActivo;  // Vector que indica si un nodo está activo
-    double q_c;  // Valor de q crítico
+    double p_c;  // Valor de p crítico
     int superTop;
     int superBottom;
 };

@@ -7,9 +7,9 @@
 
 /**
  * Constructor que inicializa la clase con el número de nodos.
- * Inicializa current_q en 0 para comenzar desde la percolación mínima.
+ * Inicializa current_p en 0 para comenzar desde la percolación mínima.
  */
-BondPercolation::BondPercolation(int numNodos) : uf(numNodos), uf_aux(numNodos + 2), numNodos(numNodos), current_q(0.0) {
+BondPercolation::BondPercolation(int numNodos) : uf(numNodos), uf_aux(numNodos + 2), numNodos(numNodos), current_p(0.0) {
     // Los supernodos se colocan en las posiciones numNodos y numNodos + 1 en la estructura auxiliar
     superTop = numNodos;
     superBottom = numNodos + 1;
@@ -45,17 +45,17 @@ vector<pair<Edge, double>> BondPercolation::generate_configuration(const vector<
 }
 
 /**
- * Realiza una percolación incremental. Solo se procesan las aristas cuyo peso esté entre current_q y el nuevo q.
+ * Realiza una percolación incremental. Solo se procesan las aristas cuyo peso esté entre current_p y el nuevo p.
  */
-int BondPercolation::generate_single_percolation(const vector<pair<Edge, double>>& configuracion, double q, int &greatest) {
-    if (q < current_q) {
-        cerr << "Error: No se puede realizar una percolación con un q menor que el actual." << endl;
+int BondPercolation::generate_single_percolation(const vector<pair<Edge, double>>& configuracion, double p, int &greatest) {
+    if (p < current_p) {
+        cerr << "Error: No se puede realizar una percolación con un p menor que el actual." << endl;
         return uf.numComponents(numNodos);  // Devuelve el número actual de componentes si no es válido
     }
 
-    // Solo procesar las aristas cuyo peso esté entre current_q y q
+    // Solo procesar las aristas cuyo peso esté entre current_p y p
     for (const auto& [arista, peso] : configuracion) {
-        if (peso > current_q && peso <= q) {
+        if (peso > current_p && peso <= p) {
             uf.unite(arista.first, arista.second);  // Unir si el peso está en el rango correcto
 
             // Actualizar el tamaño del clúster más grande
@@ -66,39 +66,39 @@ int BondPercolation::generate_single_percolation(const vector<pair<Edge, double>
         }
     }
 
-    // Actualizar el valor actual de q
-    current_q = q;
+    // Actualizar el valor actual de p
+    current_p = p;
 
     return uf.numComponents(numNodos);  // Devuelve el número de componentes conexos actual
 }
 
 /**
- * Realiza una percolación completa para valores de q entre 0 y 1, y devuelve la relación
- * entre q y el número de componentes conexos.
+ * Realiza una percolación completa para valores de p entre 0 y 1, y devuelve la relación
+ * entre p y el número de componentes conexos.
  */
 vector<tuple<double, int, int, double>> BondPercolation::generate_full_percolation(const vector<pair<Edge, double>>& configuracion, double step) {
-    vector<tuple<double, int, int, double>> resultados;  // Tupla para q, numComponentes, tamaño del clúster más grande, Nsc (Normalized size of the largest cluster)
+    vector<tuple<double, int, int, double>> resultados;  // Tupla para p, numComponentes, tamaño del clúster más grande, Nsc (Normalized size of the largest cluster)
     int greatest = 1; // Inicializa el clúster más grande como 1 (mínimo posible)
 
     initialize_supernodes();
 
     bool percolation = false;  // Bandera para indicar si se ha producido la percolación
 
-    // Recorremos los valores de q entre 0 y 1 usando el step
-    for (double q = 0.0; q <= 1.0 + 1e-10; q += step) {
-        int numComponentes = generate_single_percolation(configuracion, q, greatest);
+    // Recorremos los valores de p entre 0 y 1 usando el step
+    for (double p = 0.0; p <= 1.0 + 1e-10; p += step) {
+        int numComponentes = generate_single_percolation(configuracion, p, greatest);
 
         // Calcular Nsc, que es la fracción de nodos en el clúster más grande
         double Nsc = static_cast<double>(greatest) / numNodos;
 
-        // Almacenar los resultados: q, numComponentes, tamaño del clúster más grande, Nsc
-        resultados.push_back({q, numComponentes, greatest, Nsc});
+        // Almacenar los resultados: p, numComponentes, tamaño del clúster más grande, Nsc
+        resultados.push_back({p, numComponentes, greatest, Nsc});
 
         // Verificar si ya se ha producido la percolación
         if (not percolation and has_percolation()) {
-            q_c = q;  // Guardar el valor de q crítico
+            p_c = p;  // Guardar el valor de p crítico
             percolation = true;
-            cout << "Percolación detectada a q = " << q_c << endl;
+            cout << "Percolación detectada a p = " << p_c << endl;
         }
     }
 

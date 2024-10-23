@@ -25,7 +25,6 @@ def generate_random_geometric_graph(num_nodes):
     while not is_connected:
         # Calculate critical radius r using the formula
         r = math.sqrt((ln + O1) / (pi))
-        # print(f"Trying with radius: {r} (O1 = {O1})")  # Debugging info to see the radius
 
         # Generate random positions for the nodes
         pos = {i: (random.gauss(0, 2), random.gauss(0, 2)) for i in range(num_nodes)}
@@ -51,8 +50,6 @@ def write_graph_to_file(output_file, G, num_nodes):
             f.write(f"e {u} {v}\n")
 
 
-
-
 def save_graph_as_png(graph, output_image):
     pos = nx.spring_layout(graph)  # Use spring layout for a visually appealing layout
     plt.figure(figsize=(8, 8))
@@ -61,32 +58,64 @@ def save_graph_as_png(graph, output_image):
     plt.close()
 
 
-# Main interaction
-tipo = input("Introduce un tipo de grafo, malla(m), kagome(k) o geométrico(g): ")
-guardar = input("¿Desea guardar el grafo generado? (y/n): ")
-guardar_png = input("¿Desea guardar el grafo como PNG? (y/n): ")
-fileName = input("Introduce el nombre del archivo de salida: ")
+def generate_graph(tipo, params, fileName, guardar, guardar_png):
+    """
+    Generate a graph based on the given parameters and save it if specified.
+    
+    Args:
+    - tipo (str): Type of graph ("m" for malla, "k" for kagome, "g" for geometric).
+    - params (tuple): Parameters needed to generate the graph.
+    - fileName (str): The base file name to save the graph.
+    - guardar (bool): Whether to save the graph to a file.
+    - guardar_png (bool): Whether to save the graph as a PNG image.
+    """
 
-if tipo == "m":
-    n, m = map(int, input("Introduce la altura y anchura de la malla (separados por un espacio): ").split())
-    graph = generate_malla(n, m)
-    if guardar == 'y':
-        write_graph_to_file(fileName, graph, graph.number_of_nodes())
-    if guardar_png == 'y':
-        save_graph_as_png(graph, fileName + ".png")
+    if tipo == "m":
+        n, m = params
+        graph = generate_malla(n, m)
+        if guardar:
+            write_graph_to_file(fileName, graph, graph.number_of_nodes())
+        if guardar_png:
+            save_graph_as_png(graph, fileName + ".png")
 
-elif tipo == "k":
-    n, m = map(int, input("Introduce la altura y anchura de la malla Kagome (separados por un espacio): ").split())
-    graph = generate_kagome_graph(n, m)
-    if guardar == 'y':
-        write_graph_to_file(fileName, graph, graph.number_of_nodes())
-    if guardar_png == 'y':
-        save_graph_as_png(graph, fileName + ".png")
+    elif tipo == "k":
+        n, m = params
+        graph = generate_kagome_graph(n, m)
+        if guardar:
+            write_graph_to_file(fileName, graph, graph.number_of_nodes())
+        if guardar_png:
+            save_graph_as_png(graph, fileName + ".png")
 
-elif tipo == "g":
-    n = int(input("Introduce el número de nodos: "))
-    graph = generate_random_geometric_graph(n)
-    if guardar == 'y':
-        write_graph_to_file(fileName, graph, graph.number_of_nodes())
-    if guardar_png == 'y':
-        save_graph_as_png(graph, fileName + ".png")
+    elif tipo == "g":
+        n = params[0]
+        graph = generate_random_geometric_graph(n)
+        if guardar:
+            write_graph_to_file(fileName, graph, graph.number_of_nodes())
+        if guardar_png:
+            save_graph_as_png(graph, fileName + ".png")
+    
+    return graph
+
+
+# Main interaction encapsulated in a function
+def main():
+    tipo = input("Introduce un tipo de grafo, malla(m), kagome(k) o geométrico(g): ")
+    guardar = input("¿Desea guardar el grafo generado? (y/n): ").lower() == 'y'
+    guardar_png = input("¿Desea guardar el grafo como PNG? (y/n): ").lower() == 'y'
+    fileName = input("Introduce el nombre del archivo de salida: ")
+
+    if tipo == "m":
+        n, m = map(int, input("Introduce la altura y anchura de la malla (separados por un espacio): ").split())
+        generate_graph(tipo, (n, m), fileName, guardar, guardar_png)
+
+    elif tipo == "k":
+        n, m = map(int, input("Introduce la altura y anchura de la malla Kagome (separados por un espacio): ").split())
+        generate_graph(tipo, (n, m), fileName, guardar, guardar_png)
+
+    elif tipo == "g":
+        n = int(input("Introduce el número de nodos: "))
+        generate_graph(tipo, (n,), fileName, guardar, guardar_png)
+
+
+if __name__ == "__main__":
+    main()

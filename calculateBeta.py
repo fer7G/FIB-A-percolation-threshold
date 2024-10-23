@@ -4,13 +4,12 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
 # Cargar los datos
-df = pd.read_csv('N=1000.csv')
 
 def power_law(x, a, beta):
     """Función de ley de potencias para el ajuste."""
     return a * (x ** beta)
 
-def calculate_beta(df, pc=0.5, pc_max=0.57, points=20):
+def calculate_beta(df, num_nodos,  pc, pc_max):
     """
     Calcula el exponente crítico Beta usando regresión en escala log-log
     con pc fijo en 0.5. También calcula el error en el ajuste.
@@ -27,7 +26,7 @@ def calculate_beta(df, pc=0.5, pc_max=0.57, points=20):
     # Filtrar puntos con p > pc y convertir a arrays para el ajuste
     mask_nonzero = data_fit['p_pc'] > 0
     x_data = data_fit.loc[mask_nonzero, 'p_pc'].values
-    y_data = (data_fit.loc[mask_nonzero, 'Tamaño Clúster Mayor']/1000000).values
+    y_data = (data_fit.loc[mask_nonzero, 'Tamaño Clúster Mayor']/num_nodos).values
     
     # Ajustar con curve_fit para obtener tanto el valor de beta como su error
     try:
@@ -44,7 +43,7 @@ def calculate_beta(df, pc=0.5, pc_max=0.57, points=20):
     plt.figure(figsize=(10, 6))
     
     # Datos originales
-    plt.plot(df['q'], df['Tamaño Clúster Mayor']/1000000, 'b.', label='Datos originales')
+    plt.plot(df['q'], df['Tamaño Clúster Mayor']/num_nodos, 'b.', label='Datos originales')
     
     # Ajuste de ley de potencias
     x_fit = np.linspace(pc, pc_max, 100)
@@ -78,7 +77,15 @@ def calculate_beta(df, pc=0.5, pc_max=0.57, points=20):
     print(f"Factor pre-exponencial (A): {a:.4f}")
     
     return beta, beta_err
+def main():
+    inputDatos = input("Introduce el archivo csv del que leer los datos: ")
+    numNodos = int(input("Introduce el número de nodos del sistema: "))
+    pc = float(input("Introduce el punto crítico teórico (pc): "))
+    pcMax = float(input("Introduce el punto  máximo que quieres calcular (p_max): "))
+    df = pd.read_csv(inputDatos)
+    beta, beta_err = calculate_beta(df, numNodos, pc, pcMax)
+    plt.show()
 
+if __name__ == "__main__":
+    main()
 # Calcular el exponente crítico
-beta, beta_err = calculate_beta(df)
-plt.show()

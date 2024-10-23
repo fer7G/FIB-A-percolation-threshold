@@ -3,6 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 import numpy as np  # For NaN handling
+import graph_generator as gg
+import calculateBeta as cb
 
 def run_percolation_program(executable, dimacs_file, percolation_type, step):
     # Run the C++ program and capture the output
@@ -147,11 +149,18 @@ def save_averaged_results_to_csv(results_list, filename, percolThresh):
     print("Average resultados acumulados guardados en ", filename)
 
 # Parameters for the program execution
+
 executable = "./programa"  # Update with the path to your executable
+
+generate_graph = input("Quieres generar un grafo? (y/n): \n")
+if generate_graph == "y":
+    gg.main()
+
+
 percolation_type = input("Quieres hacer percolación por aristas(1) o nodos(2): \n")  # 1 for Bond Percolation, 2 for Site Percolation
 step = input("Introduce el step: \n")
 output_photo_base = input("Introduce el nombre para las fotos resultantes(sin extension .png): \n")
-csv_file = input("Introduce el nombre del archivo .csv: \n")
+csv_file = input("Introduce el nombre del archivo csv (Sin extensión .csv): \n")
 iterations = int(input("Cuantas iteraciones quieres hacer?: \n"))
 
 # User input for DIMACS files
@@ -181,5 +190,6 @@ for dimacs_file in dimacs_files:
 
 # Plot the results from all CSV files
 plot_results(csv_filenames, output_photo_base, colors)
+
 
     

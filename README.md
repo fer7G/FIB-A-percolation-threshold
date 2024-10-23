@@ -31,7 +31,7 @@ Antes de proceder a las ejecuciones, el programa le dará la opción de generar 
 
 - Malla (lattice cuadrada): Especifica las dimensiones de la cuadrícula (Int, Int).
 - Kagome: Especifica las dimensiones de la cuadrícula triangular (Int, Int).
-- Grafo geométrico aleatorio: Especifica el número de nodos y el radio para la formación de       aristas,un valor entre 0 y 1.
+- Grafo geométrico aleatorio: Especifica el número de nodos.
 
 Una vez ejecutado, se guardará en el directorio de compilación un archivo .dimacs con el nombre que le haya dado.
 

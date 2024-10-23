@@ -25,16 +25,16 @@ def run_percolation_program(executable, dimacs_file, percolation_type, step):
     results = []
     percolationThreshold = None
     for line in result.stdout.splitlines():
-        if line.startswith("q ="):
-            # Extract values of q, Componentes Conexos, Tamaño Clúster Mayor, and N_sc
+        if line.startswith("p ="):
+            # Extract values of p, Componentes Conexos, Smax, and Nmax
             parts = line.split(", ")
-            q_value = float(parts[0].split("= ")[1])
+            p = float(parts[0].split("= ")[1])
             num_components = int(parts[1])
-            cluster_size = int(parts[2])
-            N_sc = float(parts[3])
-            results.append((q_value, num_components, cluster_size, N_sc))
+            Smax = int(parts[2])
+            Nmax = float(parts[3])
+            results.append((p, num_components, Smax, Nmax))
 
-        elif line.startswith("Percolación detectada a q = "):
+        elif line.startswith("Percolación detectada a p = "):
             percolationThreshold = float(line.split("= ")[1])
             print(percolationThreshold)
 
@@ -42,10 +42,10 @@ def run_percolation_program(executable, dimacs_file, percolation_type, step):
 
 def save_results_to_csv(results, filename, percolThresh):
     # Create DataFrame with new columns
-    df_cols = pd.DataFrame(results, columns=['q', 'Componentes Conexos', 'Tamaño Clúster Mayor', 'N_sc'])
+    df_cols = pd.DataFrame(results, columns=['p', 'Componentes Conexos', 'Smax', 'Nmax'])
 
     # Insert a row of NaNs to separate different executions
-    separator = pd.DataFrame([[np.nan] * 4], columns=['q', 'Componentes Conexos', 'Tamaño Clúster Mayor', 'N_sc'])
+    separator = pd.DataFrame([[np.nan] * 4], columns=['p', 'Componentes Conexos', 'Smax', 'Nmax'])
     
     if os.path.exists(filename):
         df_existente = pd.read_csv(filename)
@@ -65,46 +65,46 @@ def plot_results(filenames, output_photo_base, colors):
     for i, filename in enumerate(filenames):
         df = pd.read_csv(filename)
 
-        # Plot q values vs. number of connected components
-        plt.plot(df["q"], df["Componentes Conexos"], marker="o", linestyle="-", color=colors[i % len(colors)], 
+        # Plot p values vs. number of connected components
+        plt.plot(df["p"], df["Componentes Conexos"], marker="o", linestyle="-", color=colors[i % len(colors)], 
                  label=f"Componentes Conexos - {os.path.basename(filename)}", markersize=2)
 
-    plt.xlabel("Probabilidad de Percolación (q)")
+    plt.xlabel("Pmax")
     plt.ylabel("Número de Componentes Conexos")
-    plt.title("Componentes Conexos vs Probabilidad de Percolación")
+    plt.title("Componentes Conexos vs Pmax")
     plt.legend()
     plt.grid()
     plt.savefig(f'{output_photo_base}_componentes_conexos.png')  # Save plot
     plt.close()  # Close the figure to avoid overlapping
 
-    # Similar plotting for Tamaño Clúster Mayor
+    # Similar plotting for Smax
     plt.figure(figsize=(10, 6))
     for i, filename in enumerate(filenames):
         df = pd.read_csv(filename)
-        plt.plot(df["q"], df["Tamaño Clúster Mayor"], marker="o", linestyle="-", color=colors[i % len(colors)], 
-                 label=f"Tamaño Clúster Mayor - {os.path.basename(filename)}", markersize=2)
+        plt.plot(df["p"], df["Smax"], marker="o", linestyle="-", color=colors[i % len(colors)], 
+                 label=f"Smax - {os.path.basename(filename)}", markersize=2)
 
-    plt.xlabel("Probabilidad de Percolación (q)")
-    plt.ylabel("Tamaño Clúster Mayor")
-    plt.title("Tamaño Clúster Mayor vs Probabilidad de Percolación")
+    plt.xlabel("Pmax")
+    plt.ylabel("Smax")
+    plt.title("Smax vs Pmax")
     plt.legend()
     plt.grid()
     plt.savefig(f'{output_photo_base}_cluster_mayor.png')  # Save plot
     plt.close()
 
-    # Similar plotting for N_sc
+    # Similar plotting for Nmax
     plt.figure(figsize=(10, 6))
     for i, filename in enumerate(filenames):
         df = pd.read_csv(filename)
-        plt.plot(df["q"], df["N_sc"], marker="o", linestyle="-", color=colors[i % len(colors)], 
-                 label=f"N_sc - {os.path.basename(filename)}", markersize=2)
+        plt.plot(df["p"], df["Nmax"], marker="o", linestyle="-", color=colors[i % len(colors)], 
+                 label=f"Nmax - {os.path.basename(filename)}", markersize=2)
 
-    plt.xlabel("Probabilidad de Percolación (q)")
-    plt.ylabel("N_sc")
-    plt.title("N_sc vs Probabilidad de Percolación")
+    plt.xlabel("Pmax")
+    plt.ylabel("Nmax")
+    plt.title("Nmax vs Pmax")
     plt.legend()
     plt.grid()
-    plt.savefig(f'{output_photo_base}_n_sc.png')  # Save plot
+    plt.savefig(f'{output_photo_base}_Nmax.png')  # Save plot
     plt.close()
 
 # Parameters for the program execution
@@ -115,27 +115,27 @@ def save_averaged_results_to_csv(results_list, filename, percolThresh):
     
     for results in results_list:
         if results:  # Check if the results are not empty
-            for q_value, num_components, cluster_size, N_sc in results:
-                if q_value not in avg_results:
-                    avg_results[q_value] = [0, 0, 0, 0]  # [sum_num_components, sum_cluster_size, sum_N_sc, count]
+            for p, num_components, Smax, Nmax in results:
+                if p not in avg_results:
+                    avg_results[p] = [0, 0, 0, 0]  # [sum_num_components, sum_Smax, sum_Nmax, count]
                 
-                avg_results[q_value][0] += num_components
-                avg_results[q_value][1] += cluster_size
-                avg_results[q_value][2] += N_sc
-                avg_results[q_value][3] += 1  # Increment the count
+                avg_results[p][0] += num_components
+                avg_results[p][1] += Smax
+                avg_results[p][2] += Nmax
+                avg_results[p][3] += 1  # Increment the count
     
     # Calculate average values
     averaged_data = []
-    for q_value, (sum_num_components, sum_cluster_size, sum_N_sc, count) in avg_results.items():
-        averaged_data.append((q_value, 
+    for p, (sum_num_components, sum_Smax, sum_Nmax, count) in avg_results.items():
+        averaged_data.append((p, 
                               sum_num_components / count, 
-                              sum_cluster_size / count, 
-                              sum_N_sc / count))
+                              sum_Smax / count, 
+                              sum_Nmax / count))
     
-    avg_df = pd.DataFrame(averaged_data, columns=['q', 'Componentes Conexos', 'Tamaño Clúster Mayor', 'N_sc'])
+    avg_df = pd.DataFrame(averaged_data, columns=['p', 'Componentes Conexos', 'Smax', 'Nmax'])
 
     # Insert a row of NaNs to separate different executions
-    separator = pd.DataFrame([[np.nan] * 4], columns=['q', 'Componentes Conexos', 'Tamaño Clúster Mayor', 'N_sc'])
+    separator = pd.DataFrame([[np.nan] * 4], columns=['p', 'Componentes Conexos', 'Smax', 'Nmax'])
     
     if os.path.exists(filename):
         df_existente = pd.read_csv(filename)

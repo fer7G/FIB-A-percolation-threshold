@@ -17,11 +17,11 @@ def calculate_beta(df, num_nodos,  pc, pc_max):
     print(f"Punto crítico (pc): {pc}")
     
     # Seleccionar datos por encima de pc para el ajuste
-    mask = (df['q'] >= pc) & (df['q'] <= pc_max)
+    mask = (df['p'] >= pc) & (df['p'] <= pc_max)
     data_fit = df[mask].copy()
     
     # Calcular |p - pc| y preparar datos para el ajuste
-    data_fit['p_pc'] = data_fit['q'] - pc
+    data_fit['p_pc'] = data_fit['p'] - pc
     
     # Filtrar puntos con p > pc y convertir a arrays para el ajuste
     mask_nonzero = data_fit['p_pc'] > 0
@@ -43,7 +43,7 @@ def calculate_beta(df, num_nodos,  pc, pc_max):
     plt.figure(figsize=(10, 6))
     
     # Datos originales
-    plt.plot(df['q'], df['Tamaño Clúster Mayor']/num_nodos, 'b.', label='Datos originales')
+    plt.plot(df['p'], df['Tamaño Clúster Mayor']/num_nodos, 'b.', label='Datos originales')
     
     # Ajuste de ley de potencias
     x_fit = np.linspace(pc, pc_max, 100)

@@ -19,25 +19,25 @@ def run_percolation_program(executable, dimacs_file, percolation_type, step):
         print("Error running the program:", result.stderr)
         return None, None
     
-    percolationThreshold = 0.0
+    p_c = 0.0
 
     # Parse output to retrieve results
     results = []
     for line in result.stdout.splitlines():
-        if line.startswith("q ="):
-            # Extract values of q and number of connected components
+        if line.startswith("p ="):
+            # Extract values of p and number of connected components
             parts = line.split(", ")
-            q_value = float(parts[0].split("= ")[1])
-            num_components = int(parts[1])
-            cluster_size = int(parts[2])
-            N_sc = float(parts[3])
-            results.append((q_value, num_components, cluster_size, N_sc))
+            p = float(parts[0].split("= ")[1])
+            Ncc = int(parts[1])
+            Smax = int(parts[2])
+            Nmax = float(parts[3])
+            results.append((p, Ncc, Smax, Nmax))
 
-        elif line.startswith("Percolación detectada a q ="):
-            percolationThreshold = float(line.split("= ")[1])
-            print(f"Percolation threshold detected: q = {percolationThreshold}\n")
+        elif line.startswith("Percolación detectada a p ="):
+            p_c = float(line.split("= ")[1])
+            print(f"Percolation threshold detected: p = {p_c}\n")
     
-    return results, percolationThreshold
+    return results, p_c
 
 
 def plot_variance_vs_iterations(iterations, variances, variance_means):
@@ -61,7 +61,7 @@ def plot_variance_vs_iterations(iterations, variances, variance_means):
 executable = "./programa"  # Path to the C++ executable
 dimacs_file = "malla.dimacs"  # DIMACS file
 percolation_type = 1  # Bond(1) or Site(2) percolation
-step = 0.01  # Step for q
+step = 0.01  # Step for p
 epsilon = 6e-8  # Threshold for variance stability
 max_iterations = 10000  # Maximum number of iterations
 window_size = 15  # Number of iterations to check for stability
@@ -76,10 +76,10 @@ for i in range(1, max_iterations + 1):
     print(f"Running iteration {i}")
     
     # Run the C++ program and get results
-    results, percolationThreshold = run_percolation_program(executable, dimacs_file, percolation_type, step)
+    results, p_c = run_percolation_program(executable, dimacs_file, percolation_type, step)
     
-    if percolationThreshold is not None:
-        thresholds.append(percolationThreshold)
+    if p_c is not None:
+        thresholds.append(p_c)
 
     # Calculate the variance for the current number of thresholds
     if len(thresholds) > 1:

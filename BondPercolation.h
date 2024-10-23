@@ -37,7 +37,7 @@ public:
      * @param p Probabilidad de que una arista no falle.
      * @return Número de componentes conexos después de la percolación.
      */
-    int generate_single_percolation(const vector<pair<Edge, double>>& configuracion, double p, int &greatest);
+    int generate_single_percolation(const vector<pair<Edge, double>>& configuracion, double p, int &Smax);
 
     /**
      * Realiza una percolación completa para valores de p entre 0 y 1, y devuelve la relación

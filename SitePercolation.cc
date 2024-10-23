@@ -47,7 +47,7 @@ vector<double> SitePercolation::generate_configuration() {
  * Realiza una percolación incremental. Solo se procesan los vértices cuyo peso esté entre current_p y el nuevo p.
  * El vector de nodos activos se va actualizando.
  */
-int SitePercolation::generate_single_percolation(const vector<Edge>& aristas, const vector<double>& configuracion, double p, int &greatest) {
+int SitePercolation::generate_single_percolation(const vector<Edge>& aristas, const vector<double>& configuracion, double p, int &Smax) {
     if (p < current_p) {
         cerr << "Error: No se puede realizar una percolación con un p menor que el actual." << endl;
         return uf.numComponents(numNodos);  // Devuelve el número actual de componentes si no es válido
@@ -68,8 +68,8 @@ int SitePercolation::generate_single_percolation(const vector<Edge>& aristas, co
             uf.unite(u, v);
 
             // Actualizar el tamaño del clúster más grande
-            int newGreatest = max(uf.get_size(arista.first), uf.get_size(arista.second));
-            greatest = max(greatest, newGreatest);
+            int newSmax = max(uf.get_size(arista.first), uf.get_size(arista.second));
+            Smax = max(Smax, newSmax);
 
             uf_aux.unite(u, v);
         }
@@ -86,8 +86,8 @@ int SitePercolation::generate_single_percolation(const vector<Edge>& aristas, co
  * entre p y el número de componentes conexos.
  */
 vector<tuple<double, int, int, double>> SitePercolation::generate_full_percolation(const vector<Edge>& aristas, const vector<double>& configuracion, double step) {
-    vector<tuple<double, int, int, double>> resultados; // Tupla para p, numComponentes, tamaño del clúster más grande, N_sc
-    int greatest = 1;  // Inicializa el clúster más grande como 1 (mínimo posible)
+    vector<tuple<double, int, int, double>> resultados; // Tupla para p, numComponentes, tamaño del clúster más grande, Nmax
+    int Smax = 1;  // Inicializa el clúster más grande como 1 (mínimo posible)
 
     initialize_supernodes();
 
@@ -95,13 +95,13 @@ vector<tuple<double, int, int, double>> SitePercolation::generate_full_percolati
 
     // Recorremos los valores de p entre 0 y 1 usando el step
     for (double p = 0.0; p <= 1.0 + 1e-10; p += step) {
-        int numComponentes = generate_single_percolation(aristas, configuracion, p, greatest);
+        int numComponentes = generate_single_percolation(aristas, configuracion, p, Smax);
 
-        // Calcular N_sc, que es la fracción de nodos en el clúster más grande
-        double Nsc = static_cast<double>(greatest) / numNodos;
+        // Calcular Nmax, que es la fracción de nodos en el clúster más grande
+        double Nmax = static_cast<double>(Smax) / numNodos;
 
-        // Almacenar los resultados: p, numComponentes, tamaño del clúster más grande, N_sc
-        resultados.push_back({p, numComponentes, greatest, Nsc});
+        // Almacenar los resultados: p, numComponentes, tamaño del clúster más grande, Nmax
+        resultados.push_back({p, numComponentes, Smax, Nmax});
 
         // Verificar si ya se ha producido la percolación
         if (not percolation and has_percolation()) {

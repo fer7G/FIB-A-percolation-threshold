@@ -27,7 +27,7 @@ int main() {
     cin >> opcion;
 
     double step;
-    cout << "Introduce el valor de step para q (entre 0 y 1): " << endl;
+    cout << "Introduce el valor de step para p (entre 0 y 1): " << endl;
     cin >> step;
 
     if (opcion == 1) {
@@ -49,15 +49,15 @@ int main() {
 
         // Mostrar encabezado de los resultados con tabs para alineación
         cout << "Resultados de la percolación por aristas completa:\n";
-        cout << "q\t\tComponentes Conexos\tTamaño Clúster Mayor\tN_sc\n";
+        cout << "p\t\tComponentes Conexos\tTamaño Clúster Mayor\tNmax\n";
 
         // Mostrar resultados
-        for (const auto& [q, numComponentes, greatest, Nsc] : resultados) {
-            cout << "q = ";
-            cout << q <<", "
+        for (const auto& [p, numComponentes, Smax, Nmax] : resultados) {
+            cout << "p = ";
+            cout << p <<", "
                 << numComponentes << ", "
-                << greatest << ", "
-                << Nsc << endl;
+                << Smax << ", "
+                << Nmax << endl;
         }
 
     } else if (opcion == 2) {
@@ -79,15 +79,15 @@ int main() {
 
         // Mostrar encabezado de los resultados con tabs para alineación
         cout << "Resultados de la percolación por nodos completa:\n";
-        cout << "q\t\tComponentes Conexos\tTamaño Clúster Mayor\tN_sc\n";
+        cout << "p\t\tComponentes Conexos\tTamaño Clúster Mayor\tNmax\n";
 
         // Mostrar resultados
-        for (const auto& [q, numComponentes, greatest, Nsc] : resultados) {
-            cout << "q = ";
-            cout << q <<", "
+        for (const auto& [p, numComponentes, Smax, Nmax] : resultados) {
+            cout << "p = ";
+            cout << p <<", "
                 << numComponentes << ", "
-                << greatest << ", "
-                << Nsc << endl;
+                << Smax << ", "
+                << Nmax << endl;
         }
 
     } else {

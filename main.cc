@@ -52,10 +52,10 @@ int main() {
         cout << "p\t\tComponentes Conexos\tSmax\tNmax\n";
 
         // Mostrar resultados
-        for (const auto& [p, numComponentes, Smax, Nmax] : resultados) {
+        for (const auto& [p, Ncc, Smax, Nmax] : resultados) {
             cout << "p = ";
             cout << p <<", "
-                << numComponentes << ", "
+                << Ncc << ", "
                 << Smax << ", "
                 << Nmax << endl;
         }
@@ -82,10 +82,10 @@ int main() {
         cout << "p\t\tComponentes Conexos\tTamaño Clúster Mayor\tNmax\n";
 
         // Mostrar resultados
-        for (const auto& [p, numComponentes, Smax, Nmax] : resultados) {
+        for (const auto& [p, Ncc, Smax, Nmax] : resultados) {
             cout << "p = ";
             cout << p <<", "
-                << numComponentes << ", "
+                << Ncc << ", "
                 << Smax << ", "
                 << Nmax << endl;
         }

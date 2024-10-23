@@ -41,7 +41,7 @@ void UnionFind::unite(int u, int v) {
  * Método que cuenta el número de componentes conexos.
  * Un componente conexo es un conjunto cuyo representante es el mismo nodo.
  */
-int UnionFind::numComponents(int n) {
+int UnionFind::Ncc(int n) {
     int count = 0;
     for (int i = 0; i < n; ++i) {
         if (parent[i] == i) ++count;  // Si el nodo es su propio representante, es un componente.

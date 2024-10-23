@@ -26,13 +26,13 @@ def run_percolation_program(executable, dimacs_file, percolation_type, step):
     percolationThreshold = None
     for line in result.stdout.splitlines():
         if line.startswith("p ="):
-            # Extract values of p, Componentes Conexos, Smax, and Nmax
+            # Extract values of p, Ncc, Smax, and Nmax
             parts = line.split(", ")
             p = float(parts[0].split("= ")[1])
-            num_components = int(parts[1])
+            Ncc = int(parts[1])
             Smax = int(parts[2])
             Nmax = float(parts[3])
-            results.append((p, num_components, Smax, Nmax))
+            results.append((p, Ncc, Smax, Nmax))
 
         elif line.startswith("Percolación detectada a p = "):
             percolationThreshold = float(line.split("= ")[1])
@@ -42,10 +42,10 @@ def run_percolation_program(executable, dimacs_file, percolation_type, step):
 
 def save_results_to_csv(results, filename, percolThresh):
     # Create DataFrame with new columns
-    df_cols = pd.DataFrame(results, columns=['p', 'Componentes Conexos', 'Smax', 'Nmax'])
+    df_cols = pd.DataFrame(results, columns=['p', 'Ncc', 'Smax', 'Nmax'])
 
     # Insert a row of NaNs to separate different executions
-    separator = pd.DataFrame([[np.nan] * 4], columns=['p', 'Componentes Conexos', 'Smax', 'Nmax'])
+    separator = pd.DataFrame([[np.nan] * 4], columns=['p', 'Ncc', 'Smax', 'Nmax'])
     
     if os.path.exists(filename):
         df_existente = pd.read_csv(filename)
@@ -66,15 +66,15 @@ def plot_results(filenames, output_photo_base, colors):
         df = pd.read_csv(filename)
 
         # Plot p values vs. number of connected components
-        plt.plot(df["p"], df["Componentes Conexos"], marker="o", linestyle="-", color=colors[i % len(colors)], 
-                 label=f"Componentes Conexos - {os.path.basename(filename)}", markersize=2)
+        plt.plot(df["p"], df["Ncc"], marker="o", linestyle="-", color=colors[i % len(colors)], 
+                 label=f"Ncc - {os.path.basename(filename)}", markersize=2)
 
     plt.xlabel("Pmax")
-    plt.ylabel("Número de Componentes Conexos")
-    plt.title("Componentes Conexos vs Pmax")
+    plt.ylabel("Ncc")
+    plt.title("Ncc vs Pmax")
     plt.legend()
     plt.grid()
-    plt.savefig(f'{output_photo_base}_componentes_conexos.png')  # Save plot
+    plt.savefig(f'{output_photo_base}_Ncc.png')  # Save plot
     plt.close()  # Close the figure to avoid overlapping
 
     # Similar plotting for Smax
@@ -89,7 +89,7 @@ def plot_results(filenames, output_photo_base, colors):
     plt.title("Smax vs Pmax")
     plt.legend()
     plt.grid()
-    plt.savefig(f'{output_photo_base}_cluster_mayor.png')  # Save plot
+    plt.savefig(f'{output_photo_base}_Smax.png')  # Save plot
     plt.close()
 
     # Similar plotting for Nmax
@@ -115,27 +115,27 @@ def save_averaged_results_to_csv(results_list, filename, percolThresh):
     
     for results in results_list:
         if results:  # Check if the results are not empty
-            for p, num_components, Smax, Nmax in results:
+            for p, Ncc, Smax, Nmax in results:
                 if p not in avg_results:
-                    avg_results[p] = [0, 0, 0, 0]  # [sum_num_components, sum_Smax, sum_Nmax, count]
+                    avg_results[p] = [0, 0, 0, 0]  # [sum_Ncc, sum_Smax, sum_Nmax, count]
                 
-                avg_results[p][0] += num_components
+                avg_results[p][0] += Ncc
                 avg_results[p][1] += Smax
                 avg_results[p][2] += Nmax
                 avg_results[p][3] += 1  # Increment the count
     
     # Calculate average values
     averaged_data = []
-    for p, (sum_num_components, sum_Smax, sum_Nmax, count) in avg_results.items():
+    for p, (sum_Ncc, sum_Smax, sum_Nmax, count) in avg_results.items():
         averaged_data.append((p, 
-                              sum_num_components / count, 
+                              sum_Ncc / count, 
                               sum_Smax / count, 
                               sum_Nmax / count))
     
-    avg_df = pd.DataFrame(averaged_data, columns=['p', 'Componentes Conexos', 'Smax', 'Nmax'])
+    avg_df = pd.DataFrame(averaged_data, columns=['p', 'Ncc', 'Smax', 'Nmax'])
 
     # Insert a row of NaNs to separate different executions
-    separator = pd.DataFrame([[np.nan] * 4], columns=['p', 'Componentes Conexos', 'Smax', 'Nmax'])
+    separator = pd.DataFrame([[np.nan] * 4], columns=['p', 'Ncc', 'Smax', 'Nmax'])
     
     if os.path.exists(filename):
         df_existente = pd.read_csv(filename)
@@ -161,7 +161,7 @@ percolation_type = input("Quieres hacer percolación por aristas(1) o nodos(2): 
 step = input("Introduce el step: \n")
 output_photo_base = input("Introduce el nombre para las fotos resultantes(sin extension .png): \n")
 csv_file = input("Introduce el nombre del archivo csv (Sin extensión .csv): \n")
-iterations = int(input("Cuantas iteraciones quieres hacer?: \n"))
+iterations = int(input("Indica el número de experimentos que quieres realizar: \n"))
 
 # User input for DIMACS files
 dimacs_files_input = input("Introduce los archivos DIMACS separados por comas: \n")

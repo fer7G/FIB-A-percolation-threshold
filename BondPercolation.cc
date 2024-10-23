@@ -50,7 +50,7 @@ vector<pair<Edge, double>> BondPercolation::generate_configuration(const vector<
 int BondPercolation::generate_single_percolation(const vector<pair<Edge, double>>& configuracion, double p, int &Smax) {
     if (p < current_p) {
         cerr << "Error: No se puede realizar una percolación con un p menor que el actual." << endl;
-        return uf.numComponents(numNodos);  // Devuelve el número actual de componentes si no es válido
+        return uf.Ncc(numNodos);  // Devuelve el número actual de componentes si no es válido
     }
 
     // Solo procesar las aristas cuyo peso esté entre current_p y p
@@ -69,7 +69,7 @@ int BondPercolation::generate_single_percolation(const vector<pair<Edge, double>
     // Actualizar el valor actual de p
     current_p = p;
 
-    return uf.numComponents(numNodos);  // Devuelve el número de componentes conexos actual
+    return uf.Ncc(numNodos);  // Devuelve el número de componentes conexos actual
 }
 
 /**
@@ -77,7 +77,7 @@ int BondPercolation::generate_single_percolation(const vector<pair<Edge, double>
  * entre p y el número de componentes conexos.
  */
 vector<tuple<double, int, int, double>> BondPercolation::generate_full_percolation(const vector<pair<Edge, double>>& configuracion, double step) {
-    vector<tuple<double, int, int, double>> resultados;  // Tupla para p, numComponentes, tamaño del clúster más grande, Nmax (Normalized size of the largest cluster)
+    vector<tuple<double, int, int, double>> resultados;  // Tupla para p, Ncc, tamaño del clúster más grande, Nmax (Normalized size of the largest cluster)
     int Smax = 1; // Inicializa el clúster más grande como 1 (mínimo posible)
 
     initialize_supernodes();
@@ -86,13 +86,13 @@ vector<tuple<double, int, int, double>> BondPercolation::generate_full_percolati
 
     // Recorremos los valores de p entre 0 y 1 usando el step
     for (double p = 0.0; p <= 1.0 + 1e-10; p += step) {
-        int numComponentes = generate_single_percolation(configuracion, p, Smax);
+        int Ncc = generate_single_percolation(configuracion, p, Smax);
 
         // Calcular Nmax, que es la fracción de nodos en el clúster más grande
         double Nmax = static_cast<double>(Smax) / numNodos;
 
-        // Almacenar los resultados: p, numComponentes, tamaño del clúster más grande, Nmax
-        resultados.push_back({p, numComponentes, Smax, Nmax});
+        // Almacenar los resultados: p, Ncc, tamaño del clúster más grande, Nmax
+        resultados.push_back({p, Ncc, Smax, Nmax});
 
         // Verificar si ya se ha producido la percolación
         if (not percolation and has_percolation()) {

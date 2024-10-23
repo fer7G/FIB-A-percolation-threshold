@@ -46,7 +46,7 @@ public:
      * @param n Número de nodos en el grafo.
      * @return El número de componentes conexos.
      */
-    int numComponents(int n);
+    int Ncc(int n);
 
     int get_size(int n);//Devuelve size[n].
 

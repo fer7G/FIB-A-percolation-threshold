@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cmath>
 #include <chrono>
+#include <fstream>  // Para manejar archivos
 
 /**
  * Constructor que inicializa la clase con el número de nodos.
@@ -85,11 +86,28 @@ int SitePercolation::generate_single_percolation(const vector<Edge>& aristas, co
  * Realiza una percolación completa para valores de p entre 0 y 1, y devuelve la relación
  * entre p y el número de componentes conexos.
  */
-vector<tuple<double, int, int, double>> SitePercolation::generate_full_percolation(const vector<Edge>& aristas, const vector<double>& configuracion, double step) {
+vector<tuple<double, int, int, double>> SitePercolation::generate_full_percolation(
+    const vector<Edge>& aristas, const vector<double>& configuracion, double step, bool visualization) {
+
     vector<tuple<double, int, int, double>> resultados; // Tupla para p, Ncc, tamaño del clúster más grande, Nmax
     int Smax = 1;  // Inicializa el clúster más grande como 1 (mínimo posible)
+    
+    // Si se activa la visualización, abrimos los archivos .csv
+    ofstream percolation_report, cluster_of_each_node;
+    if (visualization) {
+        percolation_report.open("percolation_report.csv");
+        cluster_of_each_node.open("cluster_of_each_node.csv");
+        
+        // Escribimos los encabezados en ambos archivos
+        percolation_report << "p,Ncc,Smax,Nmax\n";
+        cluster_of_each_node << "p";
+        for (int i = 0; i < numNodos; ++i) {
+            cluster_of_each_node << ",Nodo_" << i;
+        }
+        cluster_of_each_node << "\n";
+    }
 
-    initialize_supernodes();
+    initialize_supernodes();  // Inicializar supernodos
 
     bool percolation = false;  // Bandera para indicar si se ha producido la percolación
 
@@ -103,12 +121,31 @@ vector<tuple<double, int, int, double>> SitePercolation::generate_full_percolati
         // Almacenar los resultados: p, Ncc, tamaño del clúster más grande, Nmax
         resultados.push_back({p, Ncc, Smax, Nmax});
 
+        // Si se activa la visualización, escribir en los archivos .csv
+        if (visualization) {
+            // Guardar en el archivo percolation_report.csv
+            percolation_report << p << "," << Ncc << "," << Smax << "," << Nmax << "\n";
+
+            // Guardar en el archivo cluster_of_each_node.csv
+            cluster_of_each_node << p;
+            for (int i = 0; i < numNodos; ++i) {
+                cluster_of_each_node << "," << uf.find(i);  // Obtener el clúster del nodo i
+            }
+            cluster_of_each_node << "\n";
+        }
+
         // Verificar si ya se ha producido la percolación
-        if (not percolation and has_percolation()) {
+        if (!percolation && has_percolation()) {
             p_c = p;  // Guardar el valor de p crítico
             percolation = true;
             cout << "Percolación detectada a p = " << p_c << endl;
         }
+    }
+
+    // Cerrar los archivos si se abrió para visualización
+    if (visualization) {
+        percolation_report.close();
+        cluster_of_each_node.close();
     }
 
     return resultados;

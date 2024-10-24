@@ -11,3 +11,7 @@ __pycache__
 programa
 .png
 venv
+cluster_of_each_node.csv
+percolation_report.csv
+percolation_images
+

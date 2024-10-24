@@ -30,6 +30,10 @@ int main() {
     cout << "Introduce el valor de step para p (entre 0 y 1): " << endl;
     cin >> step;
 
+    bool visualization;
+    cout << "¿Deseas guardar la posición de cada nodo en cada paso para posterior visualización? (0 = No, 1 = Sí): " << endl;
+    cin >> visualization;
+
     if (opcion == 1) {
         // Percolación por aristas
         BondPercolation percolacion(numNodos);
@@ -41,7 +45,7 @@ int main() {
         auto start = chrono::high_resolution_clock::now();
 
         // Realizar una percolación completa
-        vector<tuple<double, int, int, double>> resultados = percolacion.generate_full_percolation(configuracion, step);
+        vector<tuple<double, int, int, double>> resultados = percolacion.generate_full_percolation(configuracion, step, visualization);
 
         auto end = chrono::high_resolution_clock::now();
         chrono::duration<double> elapsed = end - start;
@@ -71,7 +75,7 @@ int main() {
         auto start = chrono::high_resolution_clock::now();
 
         // Realizar una percolación completa
-        vector<tuple<double, int, int, double>> resultados = percolacion.generate_full_percolation(aristas, configuracion, step);
+        vector<tuple<double, int, int, double>> resultados = percolacion.generate_full_percolation(aristas, configuracion, step, visualization);
 
         auto end = chrono::high_resolution_clock::now();
         chrono::duration<double> elapsed = end - start;

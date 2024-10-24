@@ -47,7 +47,7 @@ public:
      * @param step Valor de paso para p.
      * @return Un vector de pares donde cada par es un valor de p y el número de componentes conexos.
      */
-    vector<tuple<double, int, int, double>> generate_full_percolation(const vector<pair<Edge, double>>& configuracion, double step);
+    vector<tuple<double, int, int, double>> generate_full_percolation(const vector<pair<Edge, double>>& configuracion, double step, bool visualization);
 
     /**
      * Función que verifica si se ha producido la percolación (si existe un camino del top al bottom).

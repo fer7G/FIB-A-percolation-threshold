@@ -45,3 +45,6 @@ Tras la generación opcional del grafo, el script le pedirá los siguientes par�
 - Los archivos dimacs que quiere leer (Para la ejecución correcta no usar más de 7)
 
 Una vez terminado el programa, se podrán ver los resultados en los archivos .csv y .png que se habrán generado.
+
+#### Visualización de la simulación
+Si el usuario lo desea, ejecutando el programa "visualize_percolation.py", podrá ver una representación visual de una rejilla cuadrada percolada.

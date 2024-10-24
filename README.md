@@ -47,4 +47,5 @@ Tras la generación opcional del grafo, el script le pedirá los siguientes par�
 Una vez terminado el programa, se podrán ver los resultados en los archivos .csv y .png que se habrán generado.
 
 #### Visualización de la simulación
-Si el usuario lo desea, ejecutando el programa "visualize_percolation.py", podrá ver una representación visual de una rejilla cuadrada percolada.
+
+Para visualizar el proceso de percolación en **mallas cuadradas** se puede utilizar el script visualize_percolation.py. Para ejecutarlo, antes es necesario ejecutar el programa en C++ indicando que queremos guardar la posición de cada nodo en cada iteración de la percolación para la posterior visualización. En el main del script hay que indicar el número de nodos de la red (por defecto 500) y el delay entre cada step de p que hayamos configurado en el programa en C++ (por defecto 1 segundo). Es recomendable usar los parámetros que hay fijados, ya que se generan mallas de una resolución suficiente. En todo caso, en función del step fijado, se puede bajar el tiempo del delay para que la visualización sea más suave.

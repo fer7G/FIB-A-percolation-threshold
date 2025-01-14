@@ -1,4 +1,7 @@
 # Simulación de percolación de grafos
+
+Proyecto para el curso de Algoritmia, creado por David Castro, Fernando Guirao, Álvaro Monclús y Aleix Ortigosa.
+
 ### Descripción del Proyecto
 
 Este proyecto simula el proceso de percolación en diferentes tipos de grafos, incluyendo la percolación por aristas y percolación por nodos. Los grafos pueden ser generados como mallas cuadradas, grafos de Kagome, o grafos geométricos aleatorios. El programa permite analizar el umbral de percolación y los componentes conexos de estos grafos, entre otros valores.

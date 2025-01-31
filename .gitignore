@@ -15,3 +15,30 @@ cluster_of_each_node.csv
 percolation_report.csv
 percolation_images
 
+
+# ----------------------------------------> NUEVO GITIGNORE 
+
+# Archivos compilados y binarios
+/build/
+*.o
+*.exe
+programa
+
+# Entornos virtuales
+venv/
+.venv/
+
+# Archivos generados por el sistema
+*.DS_Store
+.idea/
+.vscode/
+__pycache__/
+
+# Archivos de datos generados
+/data/*.csv
+/data/*.dimacs
+percolation_images/
+
+# Archivos temporales o de salida
+*.png
+*.xlsx

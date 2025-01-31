@@ -4,7 +4,7 @@
 #include <iostream>
 
 vector<Edge> leerDimacs(const string& nombreArchivo, int& numNodos) {
-    ifstream archivo(nombreArchivo);
+    ifstream archivo("../data/" + nombreArchivo);
     vector<Edge> aristas;
     string linea;
 

@@ -12,7 +12,7 @@ int main() {
     cin >> nombreArchivo;
 
     int numNodos;
-    vector<Edge> aristas = leerDimacs(nombreArchivo, numNodos);
+    vector<Edge> aristas = leerDimacs("../data/" + nombreArchivo, numNodos);
 
     if (aristas.empty()) {
         cerr << "Error: No se pudieron leer las aristas del archivo!" << endl;

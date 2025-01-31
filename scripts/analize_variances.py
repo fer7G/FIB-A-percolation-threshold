@@ -53,13 +53,13 @@ def plot_variance_vs_iterations(iterations, variances, variance_means):
     plt.title("Variance and Mean of Percolation Threshold Variance vs Number of Iterations")
     plt.legend()
     plt.grid()
-    plt.savefig("variance_percolation_iterations_with_mean.png")
+    plt.savefig("data/variance_percolation_iterations_with_mean.png")
     plt.show()
 
 
 # Parameters
-executable = "./programa"  # Path to the C++ executable
-dimacs_file = "malla.dimacs"  # DIMACS file
+executable = "./build/programa"  # Path to the C++ executable
+dimacs_file = "data/malla.dimacs"  # DIMACS file
 percolation_type = 1  # Bond(1) or Site(2) percolation
 step = 0.01  # Step for p
 epsilon = 6e-8  # Threshold for variance stability

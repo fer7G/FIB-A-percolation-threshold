@@ -54,7 +54,7 @@ def visualize_percolation(csv_file, grid_size, delay=1, save_images=False):
 
         # Mostrar o guardar las imágenes
         if save_images:
-            plt.savefig(f"percolation_images/percolation_p_{p_value:.2f}.png")
+            plt.savefig(f"data/percolation_images/percolation_p_{p_value:.2f}.png")
 
         # Hacer una pausa para actualizar la visualización
         plt.pause(delay)
@@ -63,14 +63,14 @@ def visualize_percolation(csv_file, grid_size, delay=1, save_images=False):
 
 
 if __name__ == "__main__":
-    csv_file = "cluster_of_each_node.csv"  # Archivo de entrada
+    csv_file = "data/cluster_of_each_node.csv"  # Archivo de entrada
     grid_size = 500  # Tamaño de la cuadrícula (ejemplo: 10x10)
     delay = 1  # Retraso de 1 segundo entre cada imagen
     save_images = False  # Cambia a True si quieres guardar las imágenes
 
     # Crear la carpeta para guardar las imágenes si es necesario
-    if save_images and not os.path.exists("percolation_images"):
-        os.makedirs("percolation_images")
+    if save_images and not os.path.exists("data/percolation_images"):
+        os.makedirs("data/percolation_images")
 
     # Ejecutar la visualización
     visualize_percolation(csv_file, grid_size, delay, save_images)

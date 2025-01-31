@@ -7,7 +7,7 @@ def run_percolation_program(executable, dimacs_file, percolation_type, step):
     # Run the C++ program and capture the output
     result = subprocess.run(
         [executable],
-        input=f"{dimacs_file}\n{percolation_type}\n{step}\n",
+        input=f"data/{dimacs_file}\n{percolation_type}\n{step}\n",
         text=True,
         capture_output=True
     )
@@ -59,12 +59,12 @@ def plot_cumulative_probability(q_values, cumulative_probabilities_list, dimacs_
     plt.title("P_max vs p for Multiple DIMACS Files (Smoothed with Moving Average)")
     plt.legend()
     plt.grid()
-    plt.savefig("p_p_multi.png")  # Save the plot as a file
+    plt.savefig("data/p_p_multi.png")  # Save the plot as a file
     plt.show()
 
 # Parameters for the program execution
-executable = "./programa"  # Update this with the path to your executable
-dimacs_files = ["20malla","100malla","200malla", "500malla","800malla", "1000malla"]  # Add your DIMACS files here
+executable = "./build/programa"  # Update this with the path to your executable
+dimacs_files = [f"data/{file}" for file in ["20malla","100malla","200malla", "500malla","800malla", "1000malla"]]
 percolation_type = 2  # 1 for Bond Percolation, 2 for Site Percolation
 step = 0.01
 

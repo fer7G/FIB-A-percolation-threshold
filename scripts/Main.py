@@ -150,7 +150,7 @@ def save_averaged_results_to_csv(results_list, filename, percolThresh):
 
 # Parameters for the program execution
 
-executable = "./build/programa"
+executable = "./build/program"
 
 generate_graph = input("Quieres generar un grafo? (y/n): \n")
 if generate_graph == "y":

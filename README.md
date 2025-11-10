@@ -50,7 +50,7 @@ $ ./program
 
 Follow the prompts to set your preferences for the simulation. Here's an example:
 
-```zsh
+```
 Enter the DIMACS file name: lattice.dimacs
 Choose percolation type:
 1. Bond percolation

@@ -53,14 +53,13 @@ int main() {
 
         // Mostrar encabezado de los resultados con tabs para alineación
         cout << "Complete bond percolation results:\n";
-        cout << "p\t\tConnected Components\tSmax\tNmax\n";
+        cout << "p\t\tConnected Components\tSmax\t\tNmax\n";
 
         // Mostrar resultados
         for (const auto& [p, Ncc, Smax, Nmax] : resultados) {
-            cout << "p = ";
-            cout << p <<", "
-                << Ncc << ", "
-                << Smax << ", "
+            cout << p << "\t\t"
+                << Ncc << "\t\t\t"
+                << Smax << "\t\t"
                 << Nmax << endl;
         }
 
@@ -87,10 +86,9 @@ int main() {
 
         // Mostrar resultados
         for (const auto& [p, Ncc, Smax, Nmax] : resultados) {
-            cout << "p = ";
-            cout << p <<", "
-                << Ncc << ", "
-                << Smax << ", "
+            cout << p << "\t\t"
+                << Ncc << "\t\t\t"
+                << Smax << "\t\t\t"
                 << Nmax << endl;
         }
 

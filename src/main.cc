@@ -23,15 +23,15 @@ int main() {
     cout << "Elige el tipo de percolación:\n";
     cout << "1. Percolación por aristas\n";
     cout << "2. Percolación por nodos\n";
-    cout << "Opción: " << endl;
+    cout << "Opción: ";
     cin >> opcion;
 
     double step;
-    cout << "Introduce el valor de step para p (entre 0 y 1): " << endl;
+    cout << "Introduce el valor de step para p (entre 0 y 1): ";
     cin >> step;
 
     bool visualization;
-    cout << "¿Deseas guardar la posición de cada nodo en cada paso para posterior visualización? (0 = No, 1 = Sí): " << endl;
+    cout << "¿Deseas guardar la posición de cada nodo en cada paso para posterior visualización? (0 = No, 1 = Sí): ";
     cin >> visualization;
 
     if (opcion == 1) {

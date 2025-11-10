@@ -10,7 +10,7 @@ def run_percolation_program(executable, dimacs_file, percolation_type, step):
     # Run the C++ program and capture the output
     result = subprocess.run(
         [executable],
-        input=f"data/{dimacs_file}\n{percolation_type}\n{step}\n",
+        input=f"{dimacs_file}\n{percolation_type}\n{step}\n0\n",
         text=True,
         capture_output=True
     )
@@ -34,7 +34,7 @@ def run_percolation_program(executable, dimacs_file, percolation_type, step):
             Nmax = float(parts[3])
             results.append((p, Ncc, Smax, Nmax))
 
-        elif line.startswith("Percolación detectada a p = "):
+        elif line.startswith("Percolation detected at p = "):
             percolationThreshold = float(line.split("= ")[1])
             print(percolationThreshold)
 
@@ -55,7 +55,7 @@ def save_results_to_csv(results, filename, percolThresh):
         df_total = df_cols
 
     # Save the updated file in CSV format
-    df_total.to_csv(f"data/{filename}", index=False)
+    df_total.to_csv(f"../data/{filename}", index=False)
     print("Resultados acumulados guardados en ", filename)
 
 def plot_results(filenames, output_photo_base, colors):
@@ -74,7 +74,7 @@ def plot_results(filenames, output_photo_base, colors):
     plt.title("Ncc vs Pmax")
     plt.legend()
     plt.grid()
-    plt.savefig(f"data/{output_photo_base}_Ncc.png")
+    plt.savefig(f"../data/{output_photo_base}_Ncc.png")
     plt.close()  # Close the figure to avoid overlapping
 
     # Similar plotting for Smax
@@ -89,7 +89,7 @@ def plot_results(filenames, output_photo_base, colors):
     plt.title("Smax vs Pmax")
     plt.legend()
     plt.grid()
-    plt.savefig(f'data/{output_photo_base}_Smax.png')  # Save plot
+    plt.savefig(f'../data/{output_photo_base}_Smax.png')  # Save plot
     plt.close()
 
     # Similar plotting for Nmax
@@ -104,7 +104,7 @@ def plot_results(filenames, output_photo_base, colors):
     plt.title("Nmax vs Pmax")
     plt.legend()
     plt.grid()
-    plt.savefig(f'data/{output_photo_base}_Nmax.png')  # Save plot
+    plt.savefig(f'../data/{output_photo_base}_Nmax.png')  # Save plot
     plt.close()
 
 # Parameters for the program execution
@@ -150,7 +150,7 @@ def save_averaged_results_to_csv(results_list, filename, percolThresh):
 
 # Parameters for the program execution
 
-executable = "./build/program"
+executable = "../build/program"
 
 generate_graph = input("Quieres generar un grafo? (y/n): \n")
 if generate_graph == "y":
@@ -165,7 +165,7 @@ iterations = int(input("Indica el número de experimentos que quieres realizar: 
 
 # User input for DIMACS files
 dimacs_files_input = input("Introduce los archivos DIMACS separados por comas: \n")
-dimacs_files = [f"data/{file.strip()}" for file in dimacs_files_input.split(",")]
+dimacs_files = [f"{file.strip()}" for file in dimacs_files_input.split(",")]
 
 # Define a color palette
 colors = ['r', 'g', 'b', 'c', 'm', 'y', 'k']  # Extend this list if you have more DIMACS files
@@ -186,7 +186,7 @@ for dimacs_file in dimacs_files:
 
     # Save averaged results to CSV after all iterations for the current graph size
     save_averaged_results_to_csv(results_list, f"{csv_file}_{os.path.basename(dimacs_file)}.csv", percolationThreshold)
-    csv_filenames.append(f"data/{csv_file}_{os.path.basename(dimacs_file)}.csv")  # Collect CSV filenames
+    csv_filenames.append(f"../data/{csv_file}_{os.path.basename(dimacs_file)}.csv")  # Collect CSV filenames
 
 # Plot the results from all CSV files
 plot_results(csv_filenames, output_photo_base, colors)

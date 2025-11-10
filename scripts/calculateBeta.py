@@ -82,7 +82,7 @@ def main():
     numNodos = int(input("Introduce el número de nodos del sistema: "))
     pc = float(input("Introduce el punto crítico teórico (pc): "))
     pcMax = float(input("Introduce el punto  máximo que quieres calcular (p_max): "))
-    df = pd.read_csv(f"data/{inputDatos}")
+    df = pd.read_csv(f"../data/{inputDatos}")
     beta, beta_err = calculate_beta(df, numNodos, pc, pcMax)
     plt.show()
 

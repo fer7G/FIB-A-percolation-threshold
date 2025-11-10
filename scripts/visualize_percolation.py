@@ -29,7 +29,7 @@ def plot_percolation_state(grid_size, node_clusters, p_value, ax, color_map):
     ax.imshow(colored_grid)
 
     # Actualizar el título
-    ax.set_title(f"Estado de la percolación - p = {p_value:.2f}")
+    ax.set_title(f"Percolation state - p = {p_value:.2f}")
     ax.set_xticks([])  # Eliminamos los ejes x
     ax.set_yticks([])  # Eliminamos los ejes y
 

@@ -44,7 +44,7 @@ def write_graph_to_file(output_file, G, num_nodes):
     mapping = {node: idx + 1 for idx, node in enumerate(G.nodes())}
     G = nx.relabel_nodes(G, mapping)  # Relabel nodes to integers
 
-    with open(f"data/{output_file}", "w") as f:
+    with open(f"../data/{output_file}", "w") as f:
         f.write(f"p edge {num_nodes} {G.number_of_edges()}\n")
         for u, v in G.edges():
             f.write(f"e {u} {v}\n")
@@ -54,7 +54,7 @@ def save_graph_as_png(graph, output_image):
     pos = nx.spring_layout(graph)  # Use spring layout for a visually appealing layout
     plt.figure(figsize=(8, 8))
     nx.draw(graph, pos, with_labels=True, node_size=300, node_color="lightblue", font_size=10, font_weight="bold")
-    plt.savefig(f"data/{output_image}")
+    plt.savefig(f"../data/{output_image}")
     plt.close()
 
 
@@ -74,25 +74,25 @@ def generate_graph(tipo, params, fileName, guardar, guardar_png):
         n, m = params
         graph = generate_malla(n, m)
         if guardar:
-            write_graph_to_file(f"data/{fileName}", graph, graph.number_of_nodes())
+            write_graph_to_file(fileName, graph, graph.number_of_nodes())
         if guardar_png:
-            save_graph_as_png(graph, f"data/{fileName}.png")
+            save_graph_as_png(graph, f"{fileName}.png")
 
     elif tipo == "k":
         n, m = params
         graph = generate_kagome_graph(n, m)
         if guardar:
-            write_graph_to_file(f"data/{fileName}", graph, graph.number_of_nodes())
+            write_graph_to_file(fileName, graph, graph.number_of_nodes())
         if guardar_png:
-            save_graph_as_png(graph, f"data/{fileName}.png")
+            save_graph_as_png(graph, f"{fileName}.png")
 
     elif tipo == "g":
         n = params[0]
         graph = generate_random_geometric_graph(n)
         if guardar:
-            write_graph_to_file(f"data/{fileName}", graph, graph.number_of_nodes())
+            write_graph_to_file(fileName, graph, graph.number_of_nodes())
         if guardar_png:
-            save_graph_as_png(graph, f"data/{fileName}.png")
+            save_graph_as_png(graph, f"{fileName}.png")
     
     return graph
 

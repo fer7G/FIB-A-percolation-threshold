@@ -8,7 +8,7 @@ def run_percolation_program(executable, dimacs_file, percolation_type, step):
     # Run the C++ program and capture the output
     result = subprocess.run(
         [executable],
-        input=f"{dimacs_file}\n{percolation_type}\n{step}\n",
+        input=f"{dimacs_file}\n{percolation_type}\n{step}\n0\n",
         text=True,
         capture_output=True
     )
@@ -33,7 +33,7 @@ def run_percolation_program(executable, dimacs_file, percolation_type, step):
             Nmax = float(parts[3])
             results.append((p, Ncc, Smax, Nmax))
 
-        elif line.startswith("Percolación detectada a p ="):
+        elif line.startswith("Percolation detected at p = "):
             p_c = float(line.split("= ")[1])
             print(f"Percolation threshold detected: p = {p_c}\n")
     
@@ -53,13 +53,13 @@ def plot_variance_vs_iterations(iterations, variances, variance_means):
     plt.title("Variance and Mean of Percolation Threshold Variance vs Number of Iterations")
     plt.legend()
     plt.grid()
-    plt.savefig("data/variance_percolation_iterations_with_mean.png")
+    plt.savefig("../data/variance_percolation_iterations_with_mean.png")
     plt.show()
 
 
 # Parameters
-executable = "./build/programa"  # Path to the C++ executable
-dimacs_file = "data/malla.dimacs"  # DIMACS file
+executable = "../build/program"  # Path to the C++ executable
+dimacs_file = "../data/malla.dimacs"  # DIMACS file
 percolation_type = 1  # Bond(1) or Site(2) percolation
 step = 0.01  # Step for p
 epsilon = 6e-8  # Threshold for variance stability

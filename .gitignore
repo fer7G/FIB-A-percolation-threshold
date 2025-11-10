@@ -39,6 +39,9 @@ __pycache__/
 /data/*.dimacs
 percolation_images/
 
+# Permitir una rejilla de pruebas
+!/data/lattice.dimacs
+
 # Archivos temporales o de salida
 *.png
 *.xlsx

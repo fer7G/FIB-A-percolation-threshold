@@ -50,7 +50,7 @@ vector<double> SitePercolation::generate_configuration() {
  */
 int SitePercolation::generate_single_percolation(const vector<Edge>& aristas, const vector<double>& configuracion, double p, int &Smax) {
     if (p < current_p) {
-        cerr << "Error: No se puede realizar una percolación con un p menor que el actual." << endl;
+        cerr << "Error: Cannot perform percolation with a p value lower than the current one." << endl;
         return uf.Ncc(numNodos);  // Devuelve el número actual de componentes si no es válido
     }
 
@@ -138,7 +138,7 @@ vector<tuple<double, int, int, double>> SitePercolation::generate_full_percolati
         if (!percolation && has_percolation()) {
             p_c = p;  // Guardar el valor de p crítico
             percolation = true;
-            cout << "Percolación detectada a p = " << p_c << endl;
+            cout << "Percolation detected at p = " << p_c << endl;
         }
     }
 

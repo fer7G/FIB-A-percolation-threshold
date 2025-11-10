@@ -8,30 +8,30 @@ using namespace std;
 
 int main() {
     string nombreArchivo;
-    cout << "Introduce el nombre del archivo DIMACS: ";
+    cout << "Enter the DIMACS file name: ";
     cin >> nombreArchivo;
 
     int numNodos;
     vector<Edge> aristas = leerDimacs("../data/" + nombreArchivo, numNodos);
 
     if (aristas.empty()) {
-        cerr << "Error: No se pudieron leer las aristas del archivo!" << endl;
+        cerr << "Error: Could not read edges from file!" << endl;
         return -1;
     }
 
     int opcion;
-    cout << "Elige el tipo de percolación:\n";
-    cout << "1. Percolación por aristas\n";
-    cout << "2. Percolación por nodos\n";
-    cout << "Opción: ";
+    cout << "Choose percolation type:\n";
+    cout << "1. Bond percolation\n";
+    cout << "2. Site percolation\n";
+    cout << "Option: ";
     cin >> opcion;
 
     double step;
-    cout << "Introduce el valor de step para p (entre 0 y 1): ";
+    cout << "Enter the step value for p (between 0 and 1): ";
     cin >> step;
 
     bool visualization;
-    cout << "¿Deseas guardar la posición de cada nodo en cada paso para posterior visualización? (0 = No, 1 = Sí): ";
+    cout << "Do you want to save the position of each node at each step for later visualization? (0 = No, 1 = Yes): ";
     cin >> visualization;
 
     if (opcion == 1) {
@@ -49,11 +49,11 @@ int main() {
 
         auto end = chrono::high_resolution_clock::now();
         chrono::duration<double> elapsed = end - start;
-        cout << "Tiempo de ejecución: " << elapsed.count() << " segundos" << endl;
+        cout << "Execution time: " << elapsed.count() << " seconds" << endl;
 
         // Mostrar encabezado de los resultados con tabs para alineación
-        cout << "Resultados de la percolación por aristas completa:\n";
-        cout << "p\t\tComponentes Conexos\tSmax\tNmax\n";
+        cout << "Complete bond percolation results:\n";
+        cout << "p\t\tConnected Components\tSmax\tNmax\n";
 
         // Mostrar resultados
         for (const auto& [p, Ncc, Smax, Nmax] : resultados) {
@@ -79,11 +79,11 @@ int main() {
 
         auto end = chrono::high_resolution_clock::now();
         chrono::duration<double> elapsed = end - start;
-        cout << "Tiempo de ejecución: " << elapsed.count() << " segundos" << endl;
+        cout << "Execution time: " << elapsed.count() << " seconds" << endl;
 
         // Mostrar encabezado de los resultados con tabs para alineación
-        cout << "Resultados de la percolación por nodos completa:\n";
-        cout << "p\t\tComponentes Conexos\tTamaño Clúster Mayor\tNmax\n";
+        cout << "Complete site percolation results:\n";
+        cout << "p\t\tConnected Components\tLargest Cluster Size\tNmax\n";
 
         // Mostrar resultados
         for (const auto& [p, Ncc, Smax, Nmax] : resultados) {
@@ -95,7 +95,7 @@ int main() {
         }
 
     } else {
-        cerr << "Opción no válida" << endl;
+        cerr << "Invalid option" << endl;
         return -1;
     }
 

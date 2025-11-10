@@ -9,7 +9,7 @@ vector<Edge> leerDimacs(const string& nombreArchivo, int& numNodos) {
     string linea;
 
     if (!archivo.is_open()) {
-        cerr << "Error al abrir el archivo!" << endl;
+        cerr << "Error opening file!" << endl;
         return aristas;
     }
 
